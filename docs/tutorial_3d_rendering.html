@@ -1,0 +1,765 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Tutorial: Rendering 3D Meshes - Zaplib docs</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="basic_tooling.html"><strong aria-hidden="true">3.</strong> Basic Tooling</a></li><li class="chapter-item expanded affix "><li class="part-title">Basic APIs</li><li class="chapter-item expanded "><a href="tutorial_hello_world_console.html"><strong aria-hidden="true">4.</strong> Tutorial: Hello World Console</a></li><li class="chapter-item expanded "><a href="tutorial_hello_thread.html"><strong aria-hidden="true">5.</strong> Tutorial: Hello Thread, Hello File</a></li><li class="chapter-item expanded "><a href="basic_api_overview.html"><strong aria-hidden="true">6.</strong> API Overview</a></li><li class="chapter-item expanded affix "><li class="part-title">JS-Rust Bridge</li><li class="chapter-item expanded "><a href="tutorial_js_rust_bridge.html"><strong aria-hidden="true">7.</strong> Tutorial: Integrating with JS</a></li><li class="chapter-item expanded "><a href="tutorial_sharing_data.html"><strong aria-hidden="true">8.</strong> Tutorial: Sharing Data</a></li><li class="chapter-item expanded "><a href="bridge_api.html"><strong aria-hidden="true">9.</strong> API Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="bridge_api_basics.html"><strong aria-hidden="true">9.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="bridge_api_params.html"><strong aria-hidden="true">9.2.</strong> Types of Parameters</a></li><li class="chapter-item expanded "><a href="bridge_api_workers.html"><strong aria-hidden="true">9.3.</strong> Web Workers</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rendering</li><li class="chapter-item expanded "><a href="tutorial_hello_world_canvas.html"><strong aria-hidden="true">10.</strong> Tutorial: Hello World Canvas</a></li><li class="chapter-item expanded "><a href="tutorial_2d_rendering.html"><strong aria-hidden="true">11.</strong> Tutorial: Rendering 2D Shapes</a></li><li class="chapter-item expanded "><a href="tutorial_3d_rendering.html" class="active"><strong aria-hidden="true">12.</strong> Tutorial: Rendering 3D Meshes</a></li><li class="chapter-item expanded "><a href="rendering_api_overview.html"><strong aria-hidden="true">13.</strong> API Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rendering_api_overview_model.html"><strong aria-hidden="true">13.1.</strong> Rendering model</a></li><li class="chapter-item expanded "><a href="rendering_api_events_overview.html"><strong aria-hidden="true">13.2.</strong> Events</a></li><li class="chapter-item expanded "><a href="rendering_api_overview_geometry.html"><strong aria-hidden="true">13.3.</strong> Geometry</a></li><li class="chapter-item expanded "><a href="rendering_api_shaders.html"><strong aria-hidden="true">13.4.</strong> Shaders</a></li><li class="chapter-item expanded "><a href="rendering_api_drawing.html"><strong aria-hidden="true">13.5.</strong> Drawing</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">UI</li><li class="chapter-item expanded "><a href="tutorial_ui_components.html"><strong aria-hidden="true">14.</strong> Tutorial: UI Components</a></li><li class="chapter-item expanded "><a href="tutorial_ui_layout.html"><strong aria-hidden="true">15.</strong> Tutorial: UI Layout</a></li><li class="chapter-item expanded "><a href="ui_api_overview.html"><strong aria-hidden="true">16.</strong> API Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ui_api_overview_components.html"><strong aria-hidden="true">16.1.</strong> UI Components</a></li><li class="chapter-item expanded "><a href="ui_api_overview_layout.html"><strong aria-hidden="true">16.2.</strong> Layout</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Misc</li><li class="chapter-item expanded "><a href="known_issues.html"><strong aria-hidden="true">17.</strong> Known Issues</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Zaplib docs</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rendering-3d-meshes"><a class="header" href="#rendering-3d-meshes">Rendering 3D Meshes</a></h1>
+<p>This guides will walk through the rendering API provided by Zaplib. We'll go through a few steps:</p>
+<ol>
+<li>Start with a JavaScript application, which extracts a geometry <a href="https://en.wikipedia.org/wiki/File:Utah_teapot_(solid).stl">from an STL file</a> and renders it using ThreeJS and GLSL shaders.</li>
+<li>Move our STL loading logic into Zaplib and communicate results using Web Workers.</li>
+<li>Render using Zaplib.<!-- Potentially this step should be in its own guide --></li>
+</ol>
+<p>This guide assumes an understanding of JavaScript web development, basic 3D graphics, and writing GPU shaders using a shading language (such as GLSL/HLSL).</p>
+<p>You can either follow this tutorial directly; creating the necessary files from scratch, or read the working incremental versions of each step, located in <code>zaplib/examples/tutorial_3d_rendering/</code>. To start from scratch, copy <code>zaplib/examples/tutorial_3d_rendering/step1</code> into a new directory at the top level of the <code>zaplib</code> repository called <code>tutorial_3d_rendering</code>.</p>
+<h2 id="step-1-rendering-a-mesh-in-threejs"><a class="header" href="#step-1-rendering-a-mesh-in-threejs">Step 1: Rendering a mesh in ThreeJS</a></h2>
+<p>This guide starts with a working 3D visualization in JavaScript, which renders an example using the popular <a href="https://threejs.org/">ThreeJS</a> library. Let's take a look at our existing files.</p>
+<p>Our <code>index.html</code> looks like the following:</p>
+<pre><code class="language-html">&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script type=&quot;module&quot; src=&quot;index.js&quot;&gt;&lt;/script&gt;
+    &lt;div id=&quot;root&quot; style=&quot;height: 100%; width: 100%;&quot;&gt;&lt;/div&gt;
+&lt;/body&gt;
+</code></pre>
+<p>In it, we define a top level full-page <code>div</code> with an id of <code>root</code>. We load <code>index.js</code> as well, reproduced below. Afterward, we'll go through its important pieces.</p>
+<details>
+  <summary>index.js</summary>
+<pre><code class="language-js">import * as THREE from 'https://cdn.skypack.dev/three@v0.135.0';
+import { OrbitControls } from 'https://cdn.skypack.dev/three@v0.135.0/examples/jsm/controls/OrbitControls'
+
+const loadSTLIntoGeometry = async (assetUrl) =&gt; {
+    const buffer = await fetch(assetUrl).then(r =&gt; r.arrayBuffer());
+    const data = new DataView(buffer);
+
+    const HEADER_LENGTH = 80;
+    const numTriangles = data.getUint32(HEADER_LENGTH, true);
+    const vertices = new Float32Array(numTriangles * 9);
+    const normals = new Float32Array(numTriangles * 9);
+    for (let i = 0; i &lt; numTriangles; i++) {
+        const offset = HEADER_LENGTH + 4 + i * 50;
+
+        const normalX = data.getFloat32(offset, true);
+        const normalY = data.getFloat32(offset + 4, true);
+        const normalZ = data.getFloat32(offset + 8, true);
+
+        for (let j = i * 9, k = 0; k &lt; 36; j += 3, k += 12) {
+            vertices[j] = data.getFloat32(offset + 12 + k, true);
+            vertices[j + 1] = data.getFloat32(offset + 16 + k, true);
+            vertices[j + 2] = data.getFloat32(offset + 20 + k, true);
+
+            normals[j] = normalX;
+            normals[j + 1] = normalY;
+            normals[j + 2] = normalZ;
+        }
+    }
+    const geometry = new THREE.BufferGeometry();
+    geometry.attributes.position = new THREE.BufferAttribute(vertices, 3);
+    geometry.attributes.normal = new THREE.BufferAttribute(normals, 3);
+    geometry.attributes.offset = new THREE.InstancedBufferAttribute(new Float32Array([-10, 0, 10]), 1);
+    geometry.attributes.color = new THREE.InstancedBufferAttribute(new Float32Array([1, 1, 0, 0, 1, 1, 1, 0, 1]), 3);
+
+    return geometry;
+}
+
+const material = new THREE.ShaderMaterial({
+    vertexShader: `
+    varying vec3 vPos;
+    varying vec3 vNormal;
+    varying vec3 vColor;
+    attribute float offset;
+    attribute vec3 color;
+    void main() {
+        vPos = position;
+        vNormal = normal;
+        vColor = color;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(vec3(position.x, position.y + offset, position.z),1.0);
+    }
+    `,
+    fragmentShader: `
+    varying vec3 vPos;
+    varying vec3 vNormal;
+    varying vec3 vColor;
+    void main() {
+        vec3 lightPosition = vec3(20.,0.,30.);
+        vec3 lightDirection = normalize(vPos.xyz - lightPosition);
+        gl_FragColor = vec4(clamp(dot(-lightDirection, vNormal), 0.0, 1.0) * vColor,1.0);
+    }
+    `,
+});
+
+const init = async () =&gt; {
+    const div = document.getElementById(&quot;root&quot;);
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(40, div.offsetWidth / div.offsetHeight, 0.1, 1000);
+    camera.position.set(0, -30, 30);
+
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(div.offsetWidth, div.offsetHeight);
+    div.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+
+    const render = () =&gt; {
+        renderer.render(scene, camera);
+    }
+
+    const geometry = await loadSTLIntoGeometry(&quot;/zaplib/examples/tutorial_rendering/teapot.stl&quot;);
+    const mesh = new THREE.InstancedMesh(geometry, material, 3);
+    scene.add(mesh);
+
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
+    }
+    animate();
+}
+
+init();
+</code></pre>
+</details>
+<p>This renders ThreeJS to the <code>root</code> div, which displays our 3D scene.</p>
+<p>Let's focus on what is happening in the <code>init</code> function.</p>
+<h3 id="first-we-have-our-threejs-boilerplating"><a class="header" href="#first-we-have-our-threejs-boilerplating">First we have our ThreeJS boilerplating.</a></h3>
+<pre><code class="language-js">    const div = document.getElementById(&quot;root&quot;);
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(40, div.offsetWidth / div.offsetHeight, 0.1, 1000);
+    camera.position.set(0, -30, 30);
+
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(div.offsetWidth, div.offsetHeight);
+    div.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+
+    const render = () =&gt; {
+        renderer.render(scene, camera);
+    }
+</code></pre>
+<p>This does the following:</p>
+<ul>
+<li>Defines a new 3D scene, rendering results to our supplied <code>div</code>.</li>
+<li>Defines a camera using a perspective projection, a field of view of 40, and a near/far z-axis of 0.1 and 1000. These numbers are not specifically important, but they are the defaults in Zaplib's Viewport, which we'll see later.</li>
+<li>Sets up OrbitControls, which lets us pan and zoom around our scene easily. OrbitControls by default lets us use the left mouse button to rotate the camera around the origin (0,0,0) while maintaining camera distance, and the right mouse button to pan around the scene freely.</li>
+</ul>
+<h3 id="defining-geometry"><a class="header" href="#defining-geometry">Defining geometry</a></h3>
+<pre><code class="language-js">    const geometry = await loadSTLIntoGeometry(&quot;/zaplib/examples/tutorial_rendering/teapot.stl&quot;);
+    const mesh = new THREE.InstancedMesh(geometry, material, 3);
+    scene.add(mesh);
+</code></pre>
+<p>This defines a ThreeJS InstancedMesh using a custom geometry and material. We supply an instance count of <code>3</code>, meaning that we will be rendering our model three times, with some custom properties per instance.</p>
+<p>The geometry is loaded from a remote STL file using <code>loadSTLIntoGeometry</code>, let's take a look at that.</p>
+<pre><code class="language-js">const loadSTLIntoGeometry = async (assetUrl) =&gt; {
+    const buffer = await fetch(assetUrl).then(r =&gt; r.arrayBuffer());
+    const data = new DataView(buffer);
+
+    const HEADER_LENGTH = 80;
+    const numTriangles = data.getUint32(HEADER_LENGTH, true);
+    const vertices = new Float32Array(numTriangles * 9);
+    const normals = new Float32Array(numTriangles * 9);
+    for (let i = 0; i &lt; numTriangles; i++) {
+        const offset = HEADER_LENGTH + 4 + i * 50;
+
+        const normalX = data.getFloat32(offset, true);
+        const normalY = data.getFloat32(offset + 4, true);
+        const normalZ = data.getFloat32(offset + 8, true);
+
+        for (let j = i * 9, k = 0; k &lt; 36; j += 3, k += 12) {
+            vertices[j] = data.getFloat32(offset + 12 + k, true);
+            vertices[j + 1] = data.getFloat32(offset + 16 + k, true);
+            vertices[j + 2] = data.getFloat32(offset + 20 + k, true);
+
+            normals[j] = normalX;
+            normals[j + 1] = normalY;
+            normals[j + 2] = normalZ;
+        }
+    }
+    const geometry = new THREE.BufferGeometry();
+    geometry.attributes.position = new THREE.BufferAttribute(vertices, 3);
+    geometry.attributes.normal = new THREE.BufferAttribute(normals, 3);
+    geometry.attributes.offset = new THREE.InstancedBufferAttribute(new Float32Array([-10, 0, 10]), 1);
+    geometry.attributes.color = new THREE.InstancedBufferAttribute(new Float32Array([1, 1, 0, 0, 1, 1, 1, 0, 1]), 3);
+
+    return geometry;
+}
+</code></pre>
+<p>Without going line by line here, the function does the following:</p>
+<ul>
+<li>Fetch a remote asset and load its result into an ArrayBuffer. We'll be rendering a <a href="https://en.wikipedia.org/wiki/Utah_teapot">Utah teapot</a> - by default this will be available in <code>zaplib/examples/tutorial_3d_rendering/</code>.</li>
+<li>Read through the buffer, extracting information for each triangle one by one. <a href="https://en.wikipedia.org/wiki/STL_(file_format)#Binary_STL">See the binary STL spec here</a> for information about its structure. We load each vertex and its corresponding normal into Float32Arrays.</li>
+<li>Define a new ThreeJS BufferGeometry and create new attributes to define its shapes.
+<ul>
+<li>The extracted position and normal data is loaded in as BufferAttributes.</li>
+<li>We give each instance a y-axis offset, represented as floats, and load it as InstanceBufferAttribute.</li>
+<li>We give each instance a color, represented as RGB values, and load it as an InstancedBufferAttribute.</li>
+</ul>
+</li>
+</ul>
+<p>Our mesh's material is specified using a ShaderMaterial, and aims to provide very basic lighting with a fixed point light.</p>
+<p>The vertex shader saves our position and normal as varying parameters to be used in the fragment shader, and converting our position from world coordinates to screen coordinates. We apply our instance <code>offset</code> value to get a final position.</p>
+<pre><code class="language-glsl">    varying vec3 vPos;
+    varying vec3 vNormal;
+    varying vec3 vColor;
+    attribute float offset;
+    attribute vec3 color;
+    void main() {
+        vPos = position;
+        vNormal = normal;
+        vColor = color;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(vec3(position.x, position.y + offset, position.z),1.0);
+    }
+</code></pre>
+<p>The fragment shader specifies a fixed light source and calculates pixel color by multiplying our instance color and  light intensity, using the dot product of the light direction and normal vector. We clamp light intensity between 0 and 1.</p>
+<pre><code class="language-glsl">    varying vec3 vPos;
+    varying vec3 vNormal;
+    varying vec3 vColor;
+    void main() {
+        vec3 lightPosition = vec3(20.,0.,30.);
+        vec3 lightDirection = normalize(vPos.xyz - lightPosition);
+        gl_FragColor = vec4(clamp(dot(-lightDirection, vNormal), 0.0, 1.0) * vColor,1.0);
+    }
+</code></pre>
+<p>Great! Running the example, we see our 3D scene with rudimentary lighting and pan/zoom controls with the mouse. There is a delay between page loading and scene rendering, due to our STL extraction code.</p>
+<h2 id="step-2-stl-extraction-in-rust"><a class="header" href="#step-2-stl-extraction-in-rust">Step 2: STL extraction in Rust</a></h2>
+<p>WebAssembly and Rust are most useful for expensive operations, so let's offload STL extraction from JavaScript there and look at the tradeoffs. At a high level, this means:</p>
+<ul>
+<li>performing STL extraction using a Web Worker and therefore parallel to our main thread</li>
+<li>performing our network request for the STL file in Rust</li>
+<li>communicating our result buffer back to JavaScript</li>
+</ul>
+<p>As a reminder, a working example at the end of this step is available in <code>zaplib/examples/tutorial_3d_rendering/step2</code>.</p>
+<h3 id="instantiate-a-new-zaplib-project"><a class="header" href="#instantiate-a-new-zaplib-project">Instantiate a new Zaplib project</a></h3>
+<p>This structure is further explained in previous tutorials. We'll need:</p>
+<ul>
+<li>a <code>Cargo.toml</code> file with the Zaplib dependency.</li>
+</ul>
+<pre><code class="language-toml">[package]
+name = &quot;tutorial_3d_rendering&quot;
+version = &quot;0.0.1&quot;
+edition = &quot;2018&quot;
+
+[dependencies]
+zaplib = { path = &quot;../zaplib/main&quot; }
+</code></pre>
+<ul>
+<li>and a Zaplib entrypoint for WebAssembly, in <code>src/main.rs</code>.</li>
+</ul>
+<pre><code class="language-rust noplayground">use zaplib::*;
+
+fn call_rust(_name: String, _params: Vec&lt;ZapParam&gt;) -&gt; Vec&lt;ZapParam&gt; {
+    vec![]
+}
+
+register_call_rust!(call_rust);
+</code></pre>
+<h3 id="port-stl-loading-to-rust"><a class="header" href="#port-stl-loading-to-rust">Port STL loading to Rust</a></h3>
+<p>Add a function to <code>src/main.rs</code> for STL loading. We can mirror the algorithm we have in JavaScript. Here's what that looks like:</p>
+<pre><code class="language-rust noplayground">fn parse_stl() -&gt; Vec&lt;ZapParam&gt; {
+    let mut file = UniversalFile::open(&quot;zaplib/examples/tutorial_3d_rendering/teapot.stl&quot;).unwrap();
+    let mut data = vec![];
+    file.read_to_end(&amp;mut data).unwrap();
+
+    const HEADER_LENGTH: usize = 80;
+    let num_triangles = get_u32_le(&amp;data, HEADER_LENGTH) as usize;
+    let mut vertices = Vec::with_capacity(num_triangles * 9);
+    let mut normals = Vec::with_capacity(num_triangles * 9);
+    for i in 0..num_triangles {
+        let offset = HEADER_LENGTH + 4 + i * 50;
+
+        let normal_x = get_f32_le(&amp;data, offset);
+        let normal_y = get_f32_le(&amp;data, offset + 4);
+        let normal_z = get_f32_le(&amp;data, offset + 8);
+
+        for j in (0..36).step_by(12) {
+            vertices.push(get_f32_le(&amp;data, offset + 12 + j));
+            vertices.push(get_f32_le(&amp;data, offset + 16 + j));
+            vertices.push(get_f32_le(&amp;data, offset + 20 + j));
+
+            normals.push(normal_x);
+            normals.push(normal_y);
+            normals.push(normal_z);
+        }
+    }
+
+    vec![vertices.into_param(), normals.into_param()]
+}
+</code></pre>
+<p>This code looks mostly the same; here are a few notable differences:</p>
+<ul>
+<li>We make a web request and read to a file using Zaplib's <code>UniversalFile</code> API.</li>
+<li>We use Zaplib's performant <code>byte_extract</code> module to read data. This must be imported by adding <code>use zaplib::byte_extract::{get_f32_le, get_u32_le};</code>. The module provides both little endian and big endian extraction functions for different primitive types.</li>
+<li>We use the <code>into_param()</code> helper to convert Float32 vectors into params we can return to JavaScript.</li>
+</ul>
+<p>We then integrate this to <code>call_rust</code>:</p>
+<pre><code class="language-rust noplayground">fn call_rust(name: String, _params: Vec&lt;ZapParam&gt;) -&gt; Vec&lt;ZapParam&gt; {
+    if name == &quot;parse_stl&quot; {
+        parse_stl()
+    } else {
+        panic!(&quot;Unknown function name&quot;);
+    }
+}
+</code></pre>
+<p>To build, run:</p>
+<pre><code class="language-bash">./scripts/build_wasm.sh -p tutorial_3d_rendering
+</code></pre>
+<h3 id="calling-from-js"><a class="header" href="#calling-from-js">Calling from JS</a></h3>
+<p>To call this function from our JavaScript, let's add the Zaplib dependency to <code>index.html</code>. Add a line in the <code>&lt;body&gt;</code> section:</p>
+<pre><code class="language-html">    &lt;script type=&quot;text/javascript&quot; src=&quot;/zaplib/web/dist/zaplib_runtime.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>Then, modify <code>loadSTLIntoGeometry</code> to replace our JavaScript parsing code.</p>
+<pre><code class="language-js">const loadSTLIntoGeometry = async (assetUrl) =&gt; {
+    await zaplib.initialize({ filename: '/target/wasm32-unknown-unknown/debug/tutorial_3d_rendering.wasm' });
+
+    const [vertices, normals] = await zaplib.callRust(&quot;parse_stl&quot;);
+    const geometry = new THREE.BufferGeometry();
+    geometry.attributes.position = new THREE.BufferAttribute(vertices, 3);
+    geometry.attributes.normal = new THREE.BufferAttribute(normals, 3);
+
+    return geometry;
+}
+</code></pre>
+<p>A few key changes:</p>
+<ul>
+<li>We call <code>zaplib.initialize</code> with the location of our built WebAssembly binary.</li>
+<li><code>zaplib.callRust</code> returns our vertices and normals already as Float32Arrays, which we can plug into ThreeJS.</li>
+</ul>
+<p>Great! Now let's run the example in the browser. There should be no difference in the behavior and things will load as normal, without blocking our main browser thread.</p>
+<!-- Maybe there should be an actual observable difference here. -->
+<h2 id="step-3---rendering-in-zaplib"><a class="header" href="#step-3---rendering-in-zaplib">Step 3 - Rendering in Zaplib</a></h2>
+<p>In addition to processing tasks, we can also render to the DOM directly from Rust using Zaplib. We can draw UI primitives as well as a full 3D Viewport, which will get output to a <code>canvas</code> element on our webpage.</p>
+<p>For an introduction to basic rendering, take a look at <a href="./tutorial_hello_world_canvas.html">Tutorial: Hello World Canvas</a>. Just like in that tutorial, let's create a basic Zaplib application. Here is how our Rust code should look at this point:</p>
+<pre><code class="language-rust noplayground">#[derive(Default)]
+struct App {
+    window: Window,
+    pass: Pass,
+    view: View,
+}
+
+impl App {
+    fn new(_cx: &amp;mut Cx) -&gt; Self {
+        Self::default()
+    }
+
+    fn handle(&amp;mut self, _cx: &amp;mut Cx, _event: &amp;mut Event) {}
+
+    fn draw(&amp;mut self, cx: &amp;mut Cx) {
+        self.window.begin_window(cx);
+        self.pass.begin_pass(cx, Vec4::color(&quot;0&quot;));
+        self.view.begin_view(cx, LayoutSize::FILL);
+
+        cx.begin_padding_box(Padding::hv(50., 50.));
+        TextIns::draw_walk(cx, &quot;Hello, World!&quot;, &amp;TextInsProps::default());
+        cx.end_padding_box();
+
+        self.view.end_view(cx);
+        self.pass.end_pass(cx);
+        self.window.end_window(cx);
+    }
+}
+
+main_app!(App);
+</code></pre>
+<p>Now we just need to connect the rendering with javascript page. To do so, remove our ThreeJS render, commenting out the entirety of <code>index.js</code> and replacing it with:</p>
+<pre><code class="language-js">zaplib.initialize({ filename: '/target/wasm32-unknown-unknown/debug/tutorial_3d_rendering.wasm', defaultStyles: true });
+</code></pre>
+<p>Note the addition of <code>defaultStyles</code>, which will style our full-screen canvas correctly and add a loading indicator.</p>
+<p>Rebuild the WebAssembly binary and refresh the screen. You should see a black background and a Hello World. Congratulations, we're rendering from Rust! ⚡️</p>
+<h3 id="rendering-a-3d-viewport"><a class="header" href="#rendering-a-3d-viewport">Rendering a 3D Viewport</a></h3>
+<p>Let's get back to our 3D example. One of the major advantages of Zaplib is the ability to use common structs for renderable data, instead of positional TypedArrays in JavaScript. In ThreeJS, we had to provide attributes as floats, but here we can be a bit more descriptive.</p>
+<h4 id="generating-geometries"><a class="header" href="#generating-geometries">Generating geometries</a></h4>
+<p>Let's represent a vertex struct as the below and add it to <code>src/main.rs</code>.</p>
+<pre><code class="language-rust noplayground">#[repr(C)]
+struct Vertex {
+    position: Vec3,
+    normal: Vec3,
+}
+</code></pre>
+<p>For each vertex of our shape, we represent each position and normal as a <code>Vec3</code>, which is a three-dimensional vector of floats. We have to add <code>#[repr(C)]</code> to indicate C struct alignment.</p>
+<p>Let's also add an instance struct as the below.</p>
+<pre><code class="language-rust noplayground">#[repr(C)]
+struct Instance {
+    offset: f32,
+    color: Vec3,
+}
+</code></pre>
+<p>Like in JavaScript, we provide a Y-axis offset and color per instance. This data is fixed, so we can provide it as a static. Note how much more readable this is than linear buffers in JavaScript.</p>
+<pre><code class="language-rust noplayground">const INSTANCES: [Instance; 3] = [
+    Instance { offset: -10., color: vec3(1., 1., 0.) },
+    Instance { offset: 0., color: vec3(0., 1., 1.) },
+    Instance { offset: 10., color: vec3(1., 0., 1.) },
+];
+</code></pre>
+<p>Modify the <code>parse_stl</code> function now to generate a Zaplib geometry instead of float arrays. Let's take a look at the final function.</p>
+<pre><code class="language-rust noplayground">fn parse_stl(cx: &amp;mut Cx, url: &amp;str) -&gt; GpuGeometry {
+    let mut file = UniversalFile::open(url).unwrap();
+    let mut data = vec![];
+    file.read_to_end(&amp;mut data).unwrap();
+
+    const HEADER_LENGTH: usize = 80;
+    let num_triangles = get_u32_le(&amp;data, HEADER_LENGTH) as usize;
+
+    let vertices: Vec&lt;Vertex&gt; = (0..num_triangles)
+        .flat_map(|i| {
+            let offset: usize = HEADER_LENGTH + 4 + i * 50;
+            let normal = vec3(get_f32_le(&amp;data, offset), get_f32_le(&amp;data, offset + 4), get_f32_le(&amp;data, offset + 8));
+
+            [
+                Vertex {
+                    position: vec3(
+                        get_f32_le(&amp;data, offset + 12),
+                        get_f32_le(&amp;data, offset + 16),
+                        get_f32_le(&amp;data, offset + 20),
+                    ),
+                    normal,
+                },
+                Vertex {
+                    position: vec3(
+                        get_f32_le(&amp;data, offset + 24),
+                        get_f32_le(&amp;data, offset + 28),
+                        get_f32_le(&amp;data, offset + 32),
+                    ),
+                    normal,
+                },
+                Vertex {
+                    position: vec3(
+                        get_f32_le(&amp;data, offset + 36),
+                        get_f32_le(&amp;data, offset + 40),
+                        get_f32_le(&amp;data, offset + 44),
+                    ),
+                    normal,
+                },
+            ]
+        })
+        .collect();
+
+    let indices = (0..num_triangles as u32).map(|i| [i * 3, i * 3 + 1, i * 3 + 2]).collect();
+    GpuGeometry::new(cx, Geometry::new(vertices, indices))
+}
+</code></pre>
+<p>Note:</p>
+<ul>
+<li>Our vertex attributes are now represented by a <code>Vec&lt;Vertex&gt;</code> instead of multiple arrays.</li>
+<li>We must generate a vector of <code>indices</code> to map vertices to triangles. Our approach here is naive, but this can be very useful for reducing memory costs when many vertices are duplicated.</li>
+<li>Our resulting vertices and indices are eventually passed to <code>GpuGeometry::new</code>, which registers the geometry with the framework and makes it available on our GPU.</li>
+</ul>
+<h4 id="generating-geometry-on-startup"><a class="header" href="#generating-geometry-on-startup">Generating geometry on startup</a></h4>
+<p>We now need a way to actually call <code>parse_stl</code> and save our geometry. Our <code>handle</code> function is the main entrypoint into the application lifecycle. One of our event types is called <code>Event::Construct</code>, called once after the framework has loaded. This sounds like a good place to load geometry. Write the <code>handle</code> function as follows.</p>
+<pre><code class="language-rust noplayground">fn handle(&amp;mut self, cx: &amp;mut Cx, event: &amp;mut Event) {
+    if let Event::Construct = event {
+        self.geometry = Some(parse_stl(cx, &quot;zaplib/examples/tutorial_3d_rendering/teapot.stl&quot;));
+        cx.request_draw();
+    }
+}
+</code></pre>
+<p>and add the geometry to <code>App</code>.</p>
+<pre><code class="language-rust noplayground">#[derive(Default)]
+struct App {
+    window: Window,
+    pass: Pass,
+    main_view: View,
+    geometry: Option&lt;GpuGeometry&gt;,
+}
+</code></pre>
+<p>Note:</p>
+<ul>
+<li>We pattern match on <code>event</code>, which is an enum of all possible event types.</li>
+<li><code>geometry</code> is saved as an <code>Option</code> type, because it will be <code>None</code> initially before loading.</li>
+<li>We call <code>cx.request_draw</code> after this is done to tell our framework to draw. This function is the only way to force re-draws.</li>
+</ul>
+<h4 id="defining-the-shader"><a class="header" href="#defining-the-shader">Defining the shader</a></h4>
+<p>We need a shader to represent how to render our geometry to screen, the same way we defined a <code>ShaderMaterial</code> in ThreeJS. Zaplib uses custom shader dialect, which looks similar to Rust code and is cross-platform compatible with web and native graphics frameworks. Define this shader above the <code>App</code> struct definition.</p>
+<pre><code class="language-rust noplayground">static SHADER: Shader = Shader {
+    build_geom: None,
+    code_to_concatenate: &amp;[
+        Cx::STD_SHADER,
+        code_fragment!(
+            r#&quot;
+            instance offset: float;
+            instance color: vec3;
+
+            geometry position: vec3;
+            geometry normal: vec3;
+
+            fn vertex() -&gt; vec4 {
+                return camera_projection * camera_view * vec4(vec3(position.x, position.y + offset, position.z), 1.);
+            }
+
+            fn pixel() -&gt; vec4 {
+                let lightPosition = vec3(20.,0.,30.);
+                let lightDirection = normalize(position - lightPosition);
+                return vec4(clamp(dot(-lightDirection, normal), 0.0, 1.0) * color,1.0);
+            }&quot;#
+        ),
+    ],
+    ..Shader::DEFAULT
+};
+</code></pre>
+<p>Read the above carefully, and compare it to our previous JavaScript shader, reproduced below.</p>
+<pre><code class="language-js">const material = new THREE.ShaderMaterial({
+    vertexShader: `
+    varying vec3 vPos;
+    varying vec3 vNormal;
+    void main() {
+        vPos = position;
+        vNormal = normal;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+    }
+    `,
+    fragmentShader: `
+    varying vec3 vPos;
+    varying vec3 vNormal;
+    void main() {
+        vec3 lightPosition = vec3(20.,0.,30.);
+        vec3 lightDirection = normalize(vPos.xyz - lightPosition);
+        gl_FragColor = vec4(vec3(clamp(dot(-lightDirection, vNormal), 0.0, 1.0)),1.0);
+    }
+    `,
+});
+</code></pre>
+<p>Some key differences:</p>
+<ul>
+<li>Zaplib shaders take in both a default geometry and an array of shader fragments to concatenate. We pass in <code>None</code> since we are defining a custom geometry, and prepend <code>Cx::STD_SHADER</code> to get default shader properties.</li>
+<li>Like in JS, we use <code>instance</code> parameters. The order here is very important and must match the alignment of the <code>Instance</code> struct, as we interpret it linearly.</li>
+<li>We use the <code>geometry</code> parameter to deconstruct the values of our vertex attributes. The order here is similarly important.</li>
+<li>Instance and geometry arameters are available to both fragment and vertex shaders, so we do not need to use <code>varying</code> variables to forward them.</li>
+</ul>
+<h4 id="drawing-a-mesh"><a class="header" href="#drawing-a-mesh">Drawing a mesh</a></h4>
+<p>Now that we have both the geometry and shader defined, we can add our geometry to a Viewport3D. The Viewport, like many other UI widgets from Zaplib, is provided by the <code>zaplib_widget</code> crate. Add it as a dependency in <code>Cargo.toml</code></p>
+<pre><code class="language-toml">zaplib_widget = { path = &quot;../zaplib/widget&quot; }
+</code></pre>
+<p>and import it at the top of <code>src/main.rs</code>.</p>
+<pre><code class="language-rust noplayground">use zaplib_widget::*;
+</code></pre>
+<p>In our <code>draw</code> function, add the following between <code>begin_view</code> and <code>end_view</code>.</p>
+<pre><code class="language-rust noplayground">        self.view.begin_view(cx, LayoutSize::FILL);
+        if let Some(geometry) = &amp;self.geometry {
+            self.viewport_3d.begin_draw(
+                cx,
+                Viewport3DProps {
+                    initial_camera_position: Coordinates::Cartesian(vec3(0., -30., 30.)),
+                    ..Viewport3DProps::DEFAULT
+                },
+            );
+            cx.add_mesh_instances(&amp;SHADER, &amp;INSTANCES, geometry.clone());
+            self.viewport_3d.end_draw(cx);
+        }
+        self.view.end_view(cx);
+</code></pre>
+<p>In short, this checks if we have a loaded geometry and if so, draws a viewport with an instance of it. We define an <code>initial_camera_position</code> with the same coordinates as our ThreeJS sketch.</p>
+<p>Add <code>viewport_3d</code> to the application struct</p>
+<pre><code class="language-rust noplayground">#[derive(Default)]
+struct App {
+    window: Window,
+    pass: Pass,
+    view: View,
+    viewport_3d: Viewport3D,
+    geometry: Option&lt;GpuGeometry&gt;,
+}
+</code></pre>
+<p>Rebuild the application and refresh your browser. Whoa, we're now fully rendering 3D geometry in Rust!</p>
+<p>Lastly, let's add camera controls like ThreeJS's OrbitControls. <code>Viewport3D</code> has this out of the box, but we need to make sure our event handler forwards events to it, so call <code>viewport_3d.handle</code> at the top of your <code>handle</code> function.</p>
+<pre><code class="language-rust noplayground">    fn handle(&amp;mut self, cx: &amp;mut Cx, event: &amp;mut Event) {
+        self.viewport_3d.handle(cx, event);
+
+        if let Event::Construct = event {
+            self.geometry = Some(parse_stl(cx, &quot;zaplib/examples/tutorial_3d_rendering/teapot.stl&quot;));
+            cx.request_draw();
+        }
+    }
+</code></pre>
+<p>Build and run the application. Pan and rotate with the mouse buttons, and enjoy your new WebAssembly rendered graphics!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="tutorial_2d_rendering.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="rendering_api_overview.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="tutorial_2d_rendering.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="rendering_api_overview.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

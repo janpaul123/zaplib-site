@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["sleep","Universal version of [`std::thread::sleep`]."],["spawn","Version of [`std::thread::spawn`] that also works in WebAssembly."]]});

@@ -1,0 +1,154 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `zaplib&#x2F;components&#x2F;src&#x2F;popover.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>popover.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../zaplib_components/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1"> 1</span>
+<span id="2"> 2</span>
+<span id="3"> 3</span>
+<span id="4"> 4</span>
+<span id="5"> 5</span>
+<span id="6"> 6</span>
+<span id="7"> 7</span>
+<span id="8"> 8</span>
+<span id="9"> 9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::background</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">zaplib</span>::<span class="kw-2">*</span>;
+
+<span class="doccomment">/// Popover that can be used for menus, tooltips, etc.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// For more general information about popovers, see</span>
+<span class="doccomment">/// &lt;https://uxdesign.cc/pop-up-popover-or-popper-a-quick-look-into-ui-terms-cb4114fca2a&gt;.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// TODO(JP): This currently only supports showing a popover _above_ the current</span>
+<span class="doccomment">/// box position. To make this more useful we should add different ways</span>
+<span class="doccomment">/// of positioning this.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// TODO(JP): This currently assumes you draw this on top of everything. That is</span>
+<span class="doccomment">/// not always practical (e.g. if you want to show a tooltip in a deeply nested</span>
+<span class="doccomment">/// widget), and it also doesn&#39;t break out of [`View`]s currently, so we might</span>
+<span class="doccomment">/// need to use some combination of [`View::is_overlay`] and z-depth. To show</span>
+<span class="doccomment">/// tooltips on top of everything while using the scroll position of containing</span>
+<span class="doccomment">/// [`View`]s we might need some framework changes.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// TODO(JP): Aligning the popover doesn&#39;t actually work for nested [`View`]s yet,</span>
+<span class="doccomment">/// like [`crate::TextInput`] or [`crate::TextEditor`]. See [`Cx::do_align_x`] and [`Cx::do_align_y`].</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Popover</span> {
+    <span class="ident">background</span>: <span class="ident">Background</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Popover</span> {
+    <span class="doccomment">/// Handle events for the [`Popover`] widget.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Always marks events like [`PointerDownEvent`] and [`PointerHoverEvent`] as &quot;handled&quot;.</span>
+    <span class="doccomment">/// This way, we don&#39;t leak those events to whatever is sitting in the background.</span>
+    <span class="doccomment">/// This does require this function to get called before any other event handlers!</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// TODO(JP): This might actually be a place where our eventing system breaks</span>
+    <span class="doccomment">/// down a bit. If you instantiate a [`Popover`] deep inside your application</span>
+    <span class="doccomment">/// inside some widget, then any events (e.g. [`PointerMoveEvent`]) might already</span>
+    <span class="doccomment">/// get handled earlier in the application. There are a few ways we can fix</span>
+    <span class="doccomment">/// this:</span>
+    <span class="doccomment">/// - We could do all of this in user space, by having some notion of a</span>
+    <span class="doccomment">///   &quot;popover manager&quot; that adds a [`View`] at the top level of the application</span>
+    <span class="doccomment">///   and can listen to &quot;signal&quot; events or so if you want to instantiate</span>
+    <span class="doccomment">///   a popover. Otherwise it might be tricky to communicate from inside</span>
+    <span class="doccomment">///   a widget to this &quot;popover manager&quot;, or you&#39;d have to pass a reference</span>
+    <span class="doccomment">///   to every widget! If we want to make this better, we can also consider</span>
+    <span class="doccomment">///   adding a function to get access to the application state through</span>
+    <span class="doccomment">///   [`Cx`], since we already pass that everywhere.</span>
+    <span class="doccomment">/// - We could also make such a &quot;popover manager&quot; or &quot;popover layer&quot; part of</span>
+    <span class="doccomment">///   the framework itself. Rik Arends told me that that has been on his</span>
+    <span class="doccomment">///   TODO list, so there indeed isn&#39;t proper support for this yet. I think</span>
+    <span class="doccomment">///   it might be better to start in user space though, since that&#39;s more</span>
+    <span class="doccomment">///   flexible, and then we can &quot;graduate&quot; it when we&#39;re happy with it.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">_cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Cx</span>, <span class="ident">_event</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Event</span>) {
+        <span class="comment">// event.hits_pointer(cx, self.component_id, self.background.area().get_rect_for_first_instance(cx));</span>
+    }
+
+    <span class="doccomment">/// Draw the popover.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">begin_draw</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Cx</span>, <span class="ident">width</span>: <span class="ident">Width</span>, <span class="ident">height</span>: <span class="ident">Height</span>, <span class="ident">color</span>: <span class="ident">Vec4</span>) {
+        <span class="comment">// TODO(JP): This feels like a bit of a hack; using [`Layout::align`] like this. It might be</span>
+        <span class="comment">// nicer to have an API that is like &quot;move everything over by this dx/dy&quot;.</span>
+        <span class="kw">let</span> <span class="ident">popover_y_bottom</span> <span class="op">=</span> <span class="ident">cx</span>.<span class="ident">get_draw_pos</span>().<span class="ident">y</span>;
+        <span class="ident">cx</span>.<span class="ident">begin_absolute_box</span>();
+        <span class="ident">cx</span>.<span class="ident">begin_column</span>(<span class="ident">Width::Fill</span>, <span class="ident">Height::Fix</span>(<span class="ident">popover_y_bottom</span>));
+        <span class="ident">cx</span>.<span class="ident">begin_bottom_box</span>();
+        <span class="self">self</span>.<span class="ident">background</span>.<span class="ident">begin_draw</span>(<span class="ident">cx</span>, <span class="ident">width</span>, <span class="ident">height</span>, <span class="ident">color</span>);
+    }
+
+    <span class="doccomment">/// Ends the corresponding [`Popover::begin_draw`], using its final [`Rect`] to</span>
+    <span class="doccomment">/// draw and position the [`Popover::background`].</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">end_draw</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Cx</span>) {
+        <span class="self">self</span>.<span class="ident">background</span>.<span class="ident">end_draw</span>(<span class="ident">cx</span>);
+        <span class="ident">cx</span>.<span class="ident">end_bottom_box</span>();
+        <span class="ident">cx</span>.<span class="ident">end_column</span>();
+        <span class="ident">cx</span>.<span class="ident">end_absolute_box</span>();
+    }
+}
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="zaplib_components" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+</body></html>

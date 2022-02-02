@@ -1,0 +1,399 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Tutorial: Integrating with JS - Zaplib docs</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="basic_tooling.html"><strong aria-hidden="true">3.</strong> Basic Tooling</a></li><li class="chapter-item expanded affix "><li class="part-title">Basic APIs</li><li class="chapter-item expanded "><a href="tutorial_hello_world_console.html"><strong aria-hidden="true">4.</strong> Tutorial: Hello World Console</a></li><li class="chapter-item expanded "><a href="tutorial_hello_thread.html"><strong aria-hidden="true">5.</strong> Tutorial: Hello Thread, Hello File</a></li><li class="chapter-item expanded "><a href="basic_api_overview.html"><strong aria-hidden="true">6.</strong> API Overview</a></li><li class="chapter-item expanded affix "><li class="part-title">JS-Rust Bridge</li><li class="chapter-item expanded "><a href="tutorial_js_rust_bridge.html" class="active"><strong aria-hidden="true">7.</strong> Tutorial: Integrating with JS</a></li><li class="chapter-item expanded "><a href="tutorial_sharing_data.html"><strong aria-hidden="true">8.</strong> Tutorial: Sharing Data</a></li><li class="chapter-item expanded "><a href="bridge_api.html"><strong aria-hidden="true">9.</strong> API Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="bridge_api_basics.html"><strong aria-hidden="true">9.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="bridge_api_params.html"><strong aria-hidden="true">9.2.</strong> Types of Parameters</a></li><li class="chapter-item expanded "><a href="bridge_api_workers.html"><strong aria-hidden="true">9.3.</strong> Web Workers</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rendering</li><li class="chapter-item expanded "><a href="tutorial_hello_world_canvas.html"><strong aria-hidden="true">10.</strong> Tutorial: Hello World Canvas</a></li><li class="chapter-item expanded "><a href="tutorial_2d_rendering.html"><strong aria-hidden="true">11.</strong> Tutorial: Rendering 2D Shapes</a></li><li class="chapter-item expanded "><a href="tutorial_3d_rendering.html"><strong aria-hidden="true">12.</strong> Tutorial: Rendering 3D Meshes</a></li><li class="chapter-item expanded "><a href="rendering_api_overview.html"><strong aria-hidden="true">13.</strong> API Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rendering_api_overview_model.html"><strong aria-hidden="true">13.1.</strong> Rendering model</a></li><li class="chapter-item expanded "><a href="rendering_api_events_overview.html"><strong aria-hidden="true">13.2.</strong> Events</a></li><li class="chapter-item expanded "><a href="rendering_api_overview_geometry.html"><strong aria-hidden="true">13.3.</strong> Geometry</a></li><li class="chapter-item expanded "><a href="rendering_api_shaders.html"><strong aria-hidden="true">13.4.</strong> Shaders</a></li><li class="chapter-item expanded "><a href="rendering_api_drawing.html"><strong aria-hidden="true">13.5.</strong> Drawing</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">UI</li><li class="chapter-item expanded "><a href="tutorial_ui_components.html"><strong aria-hidden="true">14.</strong> Tutorial: UI Components</a></li><li class="chapter-item expanded "><a href="tutorial_ui_layout.html"><strong aria-hidden="true">15.</strong> Tutorial: UI Layout</a></li><li class="chapter-item expanded "><a href="ui_api_overview.html"><strong aria-hidden="true">16.</strong> API Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ui_api_overview_components.html"><strong aria-hidden="true">16.1.</strong> UI Components</a></li><li class="chapter-item expanded "><a href="ui_api_overview_layout.html"><strong aria-hidden="true">16.2.</strong> Layout</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Misc</li><li class="chapter-item expanded "><a href="known_issues.html"><strong aria-hidden="true">17.</strong> Known Issues</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Zaplib docs</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!---
+TODO(Paras): Rustdoc for register_call_rust
+Can we somehow bolded code changes between code snippets?
+-->
+<h1 id="tutorial-integrating-with-js"><a class="header" href="#tutorial-integrating-with-js">Tutorial: Integrating with JS</a></h1>
+<p>This guide will show you how to add Rust code to an existing JavaScript codebase, explaining how to:</p>
+<ul>
+<li>Create a WebAssembly instance and load your Rust code.</li>
+<li>Call functions in Rust and communicate results to JavaScript.</li>
+</ul>
+<p>You can either follow this tutorial directly; creating the necessary files from scratch. It's easiest to create your code in the <code>zaplib</code> directory.</p>
+<p>Or for a full working example, check out <code>tutorial_js_rust_bridge</code> in the <code>zaplib/examples</code> directory.</p>
+<h2 id="identifying-a-need"><a class="header" href="#identifying-a-need">Identifying a need</a></h2>
+<p>Let's say you have a JavaScript codebase which needs to calculate the sum of all values in an array.</p>
+<pre><code class="language-html">&lt;!-- index.html --&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;./index.js&quot;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<pre><code class="language-js">// index.js
+const values = [1,2,3,4,5,6,7,8,9,10];
+const sum = values.reduce((acc, v) =&gt; acc + v);
+
+document.getElementById('root').textContent = sum;
+</code></pre>
+<p>This is a contrived example which does not need performance optimization, but importantly, one that locks the entire main thread while calculating results.</p>
+<p>There are a few ways to make this better, in order:</p>
+<ul>
+<li>Moving to a promise-based approach with a loading state, so other interactions aren't blocked — this achieves <em>concurrency</em>.</li>
+<li>Moving this computation into a Web Worker — this achieves <em>parallelism</em> and better utilizes multi-core machines.</li>
+<li>Translating this computation to a <em>compiled language</em> (like Rust or C++) and attaching to a browser using WebAssembly — this lets us utilize the performance characteristics of other languages, which are usually better than JavaScript.</li>
+</ul>
+<p>Zaplib provides a communication framework to do this last option with a bit more ease than other options today. Let's walk through how.</p>
+<h2 id="serving-a-webassembly-binary"><a class="header" href="#serving-a-webassembly-binary">Serving a WebAssembly binary</a></h2>
+<p>Let's start a new Zaplib application! We'll need to create a Rust entrypoint and add some boilerplating so it can compile. After this, we'll show how to actually execute this code.</p>
+<p>Additionally, we'll add a basic version of our existing JavaScript logic as Rust code.</p>
+<pre><code class="language-rust noplayground">// src/main.rs
+use zaplib::*;
+
+fn sum() {
+    // Hardcode the values for now. Later, we'll show how to communicate parameters.
+    let values = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+    let sum = values.iter().sum();
+
+    // Log sum to console. Later, we'll actually return this to JavaScript.
+    log!(sum);
+}
+
+fn call_rust(name: String, _params: Vec&lt;ZapParam&gt;) -&gt; Vec&lt;ZapParam&gt; {
+    if name == &quot;sum&quot; {
+        sum();
+    }
+
+    vec![]
+}
+
+register_call_rust!(call_rust);
+</code></pre>
+<pre><code class="language-toml"># Cargo.toml
+[package]
+name = &quot;tutorial_js_rust_bridge&quot;
+version = &quot;0.0.1&quot;
+edition = &quot;2021&quot;
+publish = false
+
+[dependencies]
+zaplib = { path=&quot;../../main&quot; }
+</code></pre>
+<!--- TODO(Paras): What will be the path to zaplib in Cargo.toml? -->
+<h3 id="whats-new"><a class="header" href="#whats-new">What's new?</a></h3>
+<p>We just added a lot, so here are the key things.</p>
+<h4 id="srcmainrs"><a class="header" href="#srcmainrs">src/main.rs</a></h4>
+<p>This will be our Rust entrypoint for the package.</p>
+<ul>
+<li><code>use zaplib::*;</code> imports the Zaplib library.</li>
+<li><code>register_call_rust</code> lets us register Rust code as callable from JavaScript. The registered function will act on two arguments: a <code>name</code> field which specifies our input argument from JavaScript, and <code>params</code> with any input data. The function returns an output vector. We'll get to that in a bit.</li>
+</ul>
+<!--- TODO(Paras): Rustdoc for register_call_rust -->
+<h4 id="cargotoml"><a class="header" href="#cargotoml">Cargo.toml</a></h4>
+<p>This is our package manifest, needed when structuring any Rust application. For more information on basic Rust packaging, see <a href="https://doc.rust-lang.org/cargo/guide/creating-a-new-project.html">the official Cargo guide</a>. We specify <code>zaplib</code> in the dependencies.</p>
+<h3 id="compiling"><a class="header" href="#compiling">Compiling</a></h3>
+<p>Compile this into a WebAssembly binary by calling:</p>
+<pre><code>./build_wasm.sh -p tutorial_js_rust_bridge
+</code></pre>
+<!--- TODO(Paras): Not sure what the path will be for this script. -->
+<p>You'll now see a binary placed in <code>target/wasm32-unknown-unknown/debug/tutorial_js_rust_bridge.wasm</code>.</p>
+<h3 id="serving"><a class="header" href="#serving">Serving</a></h3>
+<p>To load this file on the Web, we'll need an HTTP server. There's no strict requirement on the backend, as long as:</p>
+<ul>
+<li>The <code>wasm</code> file is served with the <code>application/wasm</code> MIME type.</li>
+<li>CORS headers are set with at least:</li>
+</ul>
+<pre><code>Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Embedder-Policy: require-corp
+Access-Control-Allow-Origin: *
+</code></pre>
+<!--- TODO(Paras): More restrictive CORS requirements probably exist. -->
+<p>If you already have the server running per instructions in <a href="./getting_started.html">Getting Started</a>, then great, you can keep using that! If you're interested in a more minimal server example, check out <code>zaplib/examples/tutorial_js_rust_bridge/server.py</code>.</p>
+<h2 id="connecting-to-web"><a class="header" href="#connecting-to-web">Connecting to web</a></h2>
+<p>Now that we have our backend ready, let's write our new JavaScript.</p>
+<p>Our existing code is modified to be:</p>
+<pre><code class="language-js">// index.js
+zaplib.initialize({
+    filename: `path/to/target/wasm32-unknown-unknown/debug/tutorial_js_rust_bridge.wasm`,
+    defaultStyles: true
+}).then(() =&gt; {
+  zaplib.callRust('sum');
+});
+</code></pre>
+<pre><code class="language-html">&lt;!-- index.html --&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;path/to/zaplib_runtime.js&quot;&gt;&lt;/script&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;./index.js&quot;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h3 id="whats-new-1"><a class="header" href="#whats-new-1">What's new?</a></h3>
+<ul>
+<li><code>zaplib.initialize</code>, with a path to the <code>.wasm</code> file. This assumes our web server is at the same port that served this HTML.</li>
+<li><code>zaplib.callRust</code>, where the first parameter specifies a <code>name</code> of associated logic in Rust.</li>
+<li>Importing <code>zaplib_runtime</code> in our HTML.</li>
+</ul>
+<h3 id="results"><a class="header" href="#results">Results</a></h3>
+<p>Load up the web page — in the console you should see your summed up result. Hooray! Baby steps.</p>
+<h2 id="getting-javascript-inputs-in-rust"><a class="header" href="#getting-javascript-inputs-in-rust">Getting JavaScript inputs in Rust</a></h2>
+<p>This approach shows how to trigger Rust code from JavaScript, but is missing fundamentals, notably the ability to pass input or read output. Let's first start with inputs.</p>
+<p>Here is our modified code.</p>
+<pre><code class="language-js">// index.js (after zaplib.initialize)
+const values = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+zaplib.callRust('sum', [values]);
+</code></pre>
+<pre><code class="language-rust noplayground">// src/main.rs
+use zaplib::*;
+
+fn sum(values: &amp;[u8]) {
+    let sum = values.iter().sum();
+
+    // Log sum to console. Later, we'll actually return this to JavaScript.
+    log!(sum);
+}
+
+fn call_rust(name: String, params: Vec&lt;ZapParam&gt;) -&gt; Vec&lt;ZapParam&gt; {
+    if name == &quot;sum&quot; {
+        let values = params[0].as_u8_slice();
+        sum(&amp;values);
+    }
+
+    vec![]
+}
+
+register_call_rust!(call_rust);
+</code></pre>
+<h3 id="whats-new-2"><a class="header" href="#whats-new-2">What's new?</a></h3>
+<p><code>callRust</code> can be passed a second parameter, a list of parameters of arbitrary length. Parameters must be either strings or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays">TypedArrays</a>. In the above case, we're using a <code>Uint8Array</code>.</p>
+<p>Our callback in Rust must now read this value, casting the parameter to the correct type. For Uint8Arrays, we can use the <code>as_u8_slice()</code> convenience method for this. Now we can use this like any normal array!</p>
+<h2 id="getting-rust-outputs-into-javascript"><a class="header" href="#getting-rust-outputs-into-javascript">Getting Rust outputs into JavaScript</a></h2>
+<p>Outputs work with a similar parameter structure, with the ability to pass both strings and buffers.</p>
+<p>Here is our modified code.</p>
+<pre><code class="language-js">// index.js (after zaplib.initialize)
+const values = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+const [sumArray] = await zaplib.callRust('sum', [values]);
+const sum = sumArray[0];
+document.getElementById('root').textContent = sum;
+</code></pre>
+<pre><code class="language-rust noplayground">// src/main.rs
+use zaplib::*;
+
+fn sum(values: &amp;[u8]) -&gt; u8 {
+    values.iter().sum()
+}
+
+fn call_rust(name: String, params: Vec&lt;ZapParam&gt;) -&gt; Vec&lt;ZapParam&gt; {
+    if name == &quot;sum&quot; {
+        let values = params[0].as_u8_slice();
+        let response = vec![sum(&amp;values)].into_param();
+        return vec![response];
+    }
+
+    vec![]
+}
+
+register_call_rust!(call_rust);
+</code></pre>
+<h3 id="whats-new-3"><a class="header" href="#whats-new-3">What's new?</a></h3>
+<p><code>callRust</code> will respond asynchronously with an array of parameters, so our function must now use async/await. We'll populate the first item of this array with our sum, which will be a buffer with one item.</p>
+<p>In Rust, our function can now return a vector of results. Note that each result value must be of type <code>ZapParam</code> using the helper <code>into_param()</code>.</p>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<p>We now have a web application which uses Zaplib to offload computations to Rust! To reiterate, this solution:</p>
+<ul>
+<li>Has built-in parallelism, since Zaplib computations happen in Web Workers.</li>
+<li>Offers Rust's trademark memory safety and performance.</li>
+</ul>
+<p>This solution works well, but still has one big disadvantage regarding performance: copying data. In the above example, our provided Uint8Array will be copied every time this function is called into the WebAssembly memory.</p>
+<p>To ensure great performance, we must instead structure our application to share memory across JavaScript and Rust, which we'll talk about in the <a href="./tutorial_sharing_data.html">next tutorial</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="basic_api_overview.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="tutorial_sharing_data.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="basic_api_overview.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="tutorial_sharing_data.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

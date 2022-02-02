@@ -1,0 +1,506 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `zaplib&#x2F;components&#x2F;src&#x2F;drawlines3d.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>drawlines3d.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../zaplib_components/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">zaplib</span>::<span class="kw-2">*</span>;
+
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DrawLines3dInstance</span> {
+    <span class="doccomment">/// Starting point for the previous line segment. We use this to compute</span>
+    <span class="doccomment">/// the corner between the previous line segment and the current one.</span>
+    <span class="kw">pub</span> <span class="ident">position_before</span>: <span class="ident">Vec3</span>,
+    <span class="doccomment">/// Starting point for the current line segment. This is also the end point</span>
+    <span class="doccomment">/// for the previous segment. If the current segment is the very first one</span>
+    <span class="doccomment">/// in the strip, [`DrawLines3dInstance::position_before`] and</span>
+    <span class="doccomment">/// [`DrawLines3dInstance::position_start`] will be the same point.</span>
+    <span class="kw">pub</span> <span class="ident">position_start</span>: <span class="ident">Vec3</span>,
+    <span class="doccomment">/// End point for the current line segment. This is also the start point</span>
+    <span class="doccomment">/// for the next segment in the strip. If the current segment is the last one</span>
+    <span class="doccomment">/// in the strip, both [`DrawLines3dInstance::position_end`] and [`DrawLines3dInstance::position_after`]</span>
+    <span class="doccomment">/// will have the same value.</span>
+    <span class="kw">pub</span> <span class="ident">position_end</span>: <span class="ident">Vec3</span>,
+    <span class="doccomment">/// End point for the next segment in the strip. This point is used to compute</span>
+    <span class="doccomment">/// the corner between the current segment and the next one.</span>
+    <span class="kw">pub</span> <span class="ident">position_after</span>: <span class="ident">Vec3</span>,
+    <span class="doccomment">/// Color for the start point in the current line segment.</span>
+    <span class="kw">pub</span> <span class="ident">color_start</span>: <span class="ident">Vec4</span>,
+    <span class="doccomment">/// Color for the end point in the current line segment. If it&#39;s different</span>
+    <span class="doccomment">/// from the start color, we get a gradient effect.</span>
+    <span class="kw">pub</span> <span class="ident">color_end</span>: <span class="ident">Vec4</span>,
+    <span class="doccomment">/// Thichness of the line strip</span>
+    <span class="kw">pub</span> <span class="ident">scale</span>: <span class="ident">f32</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">DrawLines3dInstance</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_segment</span>(<span class="ident">start</span>: <span class="ident">Vec3</span>, <span class="ident">end</span>: <span class="ident">Vec3</span>, <span class="ident">color</span>: <span class="ident">Vec4</span>, <span class="ident">scale</span>: <span class="ident">f32</span>) -&gt; <span class="self">Self</span> {
+        <span class="self">Self</span> {
+            <span class="ident">position_before</span>: <span class="ident">start</span>,
+            <span class="ident">position_start</span>: <span class="ident">start</span>,
+            <span class="ident">position_end</span>: <span class="ident">end</span>,
+            <span class="ident">position_after</span>: <span class="ident">end</span>,
+            <span class="ident">color_start</span>: <span class="ident">color</span>,
+            <span class="ident">color_end</span>: <span class="ident">color</span>,
+            <span class="ident">scale</span>,
+        }
+    }
+}
+
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="kw">struct</span> <span class="ident">DrawLines3dUniforms</span> {
+    <span class="ident">vertex_transform</span>: <span class="ident">Mat4</span>,
+}
+
+<span class="doccomment">/// Renderer for line markers.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// In order to support custom like thickness, we render each line segment using 2D quads</span>
+<span class="doccomment">/// which are transformed accordingly. Line segments are represented by two 3D points</span>
+<span class="doccomment">/// (start and end) and each of them can have different colors to support gradients. In addition,</span>
+<span class="doccomment">/// each line segment also gets the point before and the point after, so we can compute the corners</span>
+<span class="doccomment">/// correctly. For individual line segments, we don&#39;t need to handle the corner.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Each of the 4 points in the 2D quad is transformed by computing a normal vector multipled</span>
+<span class="doccomment">/// by a thickness value.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Roughly an individual line segment looks like:</span>
+<span class="doccomment">///       TL   -   -   -  .TR</span>
+<span class="doccomment">///       |          ,.-&#39; |</span>
+<span class="doccomment">///     A/B - - -,.-&#39; - - C/D</span>
+<span class="doccomment">///       |  ,.-&#39;         |</span>
+<span class="doccomment">///      BL-&#39; -   -   -   BR</span>
+<span class="doccomment">/// Notice that the pairs A/B and C/D are duplicated. We can use that to avoid doing extra</span>
+<span class="doccomment">/// calculation for corners (since individual line segments don&#39;t have corners)</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Line segments in a strip looks like:</span>
+<span class="doccomment">///       TL   -   -   -  .TR</span>
+<span class="doccomment">///       |          ,.-&#39; |</span>
+<span class="doccomment">/// A - - B - - -,.-&#39; - - C - - D</span>
+<span class="doccomment">///       |  ,.-&#39;         |</span>
+<span class="doccomment">///      BL-&#39; -   -   -   BR</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Corner points are computed based on the values of the 2D position (i.e. top corner is `(0, 1)`).</span>
+<span class="doccomment">/// When two adjacent segments form an obtuse angle, we draw a miter join:</span>
+<span class="doccomment">///                       TR/TL.</span>
+<span class="doccomment">///                  , &#39;   _/|   &#39; .</span>
+<span class="doccomment">///              , &#39;     _/  |       &#39; .</span>
+<span class="doccomment">///          , &#39;       _/    C           &#39; .</span>
+<span class="doccomment">///      , &#39;         _/      |               &#39; .</span>
+<span class="doccomment">///    TL          _/        |        ______,----&#39;TR</span>
+<span class="doccomment">///     \        _/       ,BR/BL.----&#39;            /</span>
+<span class="doccomment">///      B     _/    , &#39;          &#39; .            D</span>
+<span class="doccomment">///       \  _/ , &#39;                   &#39; .       /</span>
+<span class="doccomment">///        BL&#39;                            &#39; . BR</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// But when the angle gets too sharp, we switch to a &quot;fold&quot; join, where the two segments overlap at</span>
+<span class="doccomment">/// the corner:</span>
+<span class="doccomment">///         ,TR/BL---C--BR/TL</span>
+<span class="doccomment">///        ,    |.\__  ,     .</span>
+<span class="doccomment">///       ,     | .  \,_      .</span>
+<span class="doccomment">///      ,      |  . ,  \_     .</span>
+<span class="doccomment">///     ,       |   ,     \__   .</span>
+<span class="doccomment">///    ,        |  , .       \__ .</span>
+<span class="doccomment">///   TL._      | ,   .        _.TR</span>
+<span class="doccomment">///       &#39;B._  |,     .   _.C&#39;</span>
+<span class="doccomment">///           &#39;BL       BR&#39;</span>
+
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DrawLines3dOptions</span> {
+    <span class="doccomment">/// Custom transformation to do on all vertices</span>
+    <span class="kw">pub</span> <span class="ident">vertex_transform</span>: <span class="ident">Mat4</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">DrawLines3dOptions</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">vertex_transform</span>: <span class="ident">Mat4::identity</span>() }
+    }
+}
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DrawLines3d</span> {}
+
+<span class="kw">impl</span> <span class="ident">DrawLines3d</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw</span>(<span class="ident">cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Cx</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">DrawLines3dInstance</span>], <span class="ident">options</span>: <span class="ident">DrawLines3dOptions</span>) {
+        <span class="kw">let</span> <span class="ident">area</span> <span class="op">=</span> <span class="ident">cx</span>.<span class="ident">add_instances</span>(<span class="kw-2">&amp;</span><span class="ident">SHADER</span>, <span class="ident">data</span>);
+        <span class="ident">area</span>.<span class="ident">write_user_uniforms</span>(<span class="ident">cx</span>, <span class="ident">DrawLines3dUniforms</span> { <span class="ident">vertex_transform</span>: <span class="ident">options</span>.<span class="ident">vertex_transform</span> });
+    }
+}
+
+<span class="kw">static</span> <span class="ident">SHADER</span>: <span class="ident">Shader</span> <span class="op">=</span> <span class="ident">Shader</span> {
+    <span class="ident">build_geom</span>: <span class="prelude-val">Some</span>(<span class="ident">QuadIns::build_geom</span>),
+    <span class="ident">code_to_concatenate</span>: <span class="kw-2">&amp;</span>[
+        <span class="ident">Cx::STD_SHADER</span>,
+        <span class="macro">code_fragment!</span>(
+            <span class="string">r#&quot;
+            geometry geom: vec2;
+
+            uniform vertex_transform: mat4;
+
+            instance in_pos_before: vec3;
+
+            instance in_pos_start: vec3;
+
+            instance in_pos_end: vec3;
+
+            instance in_pos_after: vec3;
+
+            instance in_color_start: vec4;
+            instance in_color_end: vec4;
+
+            instance in_scale: float;
+
+            varying color: vec4;
+
+            fn project(pos: vec3) -&gt; vec4 {
+                return camera_projection * camera_view * vertex_transform * vec4(pos, 1.0);
+            }
+
+            // Transforms a vertex to clip space, accounting for aspect ratio
+            fn clip(v: vec4) -&gt; vec4 {
+                let w = draw_clip.z - draw_clip.x;
+                let h = draw_clip.w - draw_clip.y;
+                let aspect = w / h;
+                return v / v.w * aspect;
+            }
+
+            fn rotate_ccw(v: vec2) -&gt; vec2 {
+                return vec2(-v.y, v.x);
+            }
+
+            fn vertex() -&gt; vec4 {
+                let is_top = geom.y == 1.;
+                let is_left = geom.x == 0.;
+
+                let pos = is_left ? in_pos_start : in_pos_end;
+                color = is_left ? in_color_start : in_color_end;
+
+                // The line thickness should be scaled the same way the camera scales other distances.
+                // projection[0].xyz is the result of projecting a unit x-vector, so its length represents
+                // how much distances are scaled by the camera projection.
+                let thickness = 0.5 * in_scale * length(camera_projection[0].xyz);
+                thickness = is_top ? thickness : -thickness;
+
+                let projected_pos = project(pos);
+
+                // Transform all points to clip space so calculations are done in 2D and
+                // the resulting normal are already facing the camera
+                let clip_before = clip(project(in_pos_before)).xy;
+                let clip_start = clip(project(in_pos_start)).xy;
+                let clip_end = clip(project(in_pos_end)).xy;
+                let clip_after = clip(project(in_pos_after)).xy;
+
+                // Vector comparision (i.e, `clip_before == clip_start`) is not allowed?
+                // TODO(hernan): fix vector comparision
+                let is_first = length(clip_before - clip_start) &lt; 0.001;
+                let is_last = length(clip_end - clip_after) &lt; 0.001;
+                let is_endpoint = is_left ? is_first : is_last;
+
+                let dir_left = normalize(clip_start - clip_before);
+                let dir_current = normalize(clip_end - clip_start);
+                let dir_right = normalize(clip_after - clip_end);
+
+                let normal_current = rotate_ccw(dir_current);
+                let normal_left = normalize(rotate_ccw(dir_left));
+                let normal_right = normalize(rotate_ccw(dir_right));
+
+                if is_endpoint == true {
+                    projected_pos += vec4(normal_current * thickness, 0, 0);
+                    return projected_pos;
+                }
+
+                let cos_start = clamp(-dot(dir_left, dir_current), -1., 1.);
+                let cos_end = clamp(-dot(dir_current, dir_right), -1., 1.);
+
+                let too_sharp_start = cos_start &gt; 0.01;
+                let too_sharp_end = cos_end &gt; 0.01;
+                let too_sharp = is_left ? too_sharp_start : too_sharp_end;
+
+                let normal: vec2;
+                if too_sharp == true {
+                    // Fold join: The resulting offset is a vector perpendicular to the bisector
+                    // between the direction of the previous (or next) line segment and the current
+                    // one. Folding swap top/bottom vertices, so we need to acount for the direction
+                    // of the folding
+                    let turning_right_start = dot(dir_left, rotate_ccw(dir_current)) &gt; 0.;
+                    let turning_right_end = dot(dir_current, rotate_ccw(dir_right)) &gt; 0.;
+                    let turning_right = is_left ? turning_right_start : turning_right_end;
+
+                    let perp = is_left ? normal_left : normal_current;
+                    let dir = is_left ? dir_left : dir_current;
+                    let scale_perp = is_left ? -1. : 1.;
+                    let scale_dir = (turning_right == is_left) ? 1. : -1.;
+                    let tan_half_start = sqrt((1. - cos_start) / (1. + cos_start));
+                    let tan_half_end = sqrt((1. - cos_end) / (1. + cos_end));
+                    let tan_half = is_left ? tan_half_start : tan_half_end;
+                    normal = scale_perp * perp + scale_dir * dir * tan_half;
+                } else {
+                    // Miter join: compute the corner normal as the vector pointing
+                    // halfway between the previous (or next) segment and the current one
+                    let bisector_start = rotate_ccw(normalize(dir_left + dir_current)); // angle bisector of ABC
+                    let bisector_end = rotate_ccw(normalize(dir_current + dir_right)); // angle bisector of BCD
+                    let bisector = is_left ? bisector_start : bisector_end;
+                    let sin_half_start = sqrt((1. - cos_start) / 2.);
+                    let sin_half_end = sqrt((1. - cos_end) / 2.);
+                    let sin_half = is_left ? sin_half_start : sin_half_end;
+                    normal = bisector / sin_half;
+                }
+
+                projected_pos += vec4(normal * thickness, 0, 0);
+
+                return projected_pos;
+            }
+
+            fn pixel() -&gt; vec4 {
+                return color;
+            }&quot;#</span>
+        ),
+    ],
+    ..<span class="ident">Shader::DEFAULT</span>
+};
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="zaplib_components" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+</body></html>

@@ -1,0 +1,260 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Tutorial: Hello World Canvas - Zaplib docs</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="basic_tooling.html"><strong aria-hidden="true">3.</strong> Basic Tooling</a></li><li class="chapter-item expanded affix "><li class="part-title">Basic APIs</li><li class="chapter-item expanded "><a href="tutorial_hello_world_console.html"><strong aria-hidden="true">4.</strong> Tutorial: Hello World Console</a></li><li class="chapter-item expanded "><a href="tutorial_hello_thread.html"><strong aria-hidden="true">5.</strong> Tutorial: Hello Thread, Hello File</a></li><li class="chapter-item expanded "><a href="basic_api_overview.html"><strong aria-hidden="true">6.</strong> API Overview</a></li><li class="chapter-item expanded affix "><li class="part-title">JS-Rust Bridge</li><li class="chapter-item expanded "><a href="tutorial_js_rust_bridge.html"><strong aria-hidden="true">7.</strong> Tutorial: Integrating with JS</a></li><li class="chapter-item expanded "><a href="tutorial_sharing_data.html"><strong aria-hidden="true">8.</strong> Tutorial: Sharing Data</a></li><li class="chapter-item expanded "><a href="bridge_api.html"><strong aria-hidden="true">9.</strong> API Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="bridge_api_basics.html"><strong aria-hidden="true">9.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="bridge_api_params.html"><strong aria-hidden="true">9.2.</strong> Types of Parameters</a></li><li class="chapter-item expanded "><a href="bridge_api_workers.html"><strong aria-hidden="true">9.3.</strong> Web Workers</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rendering</li><li class="chapter-item expanded "><a href="tutorial_hello_world_canvas.html" class="active"><strong aria-hidden="true">10.</strong> Tutorial: Hello World Canvas</a></li><li class="chapter-item expanded "><a href="tutorial_2d_rendering.html"><strong aria-hidden="true">11.</strong> Tutorial: Rendering 2D Shapes</a></li><li class="chapter-item expanded "><a href="tutorial_3d_rendering.html"><strong aria-hidden="true">12.</strong> Tutorial: Rendering 3D Meshes</a></li><li class="chapter-item expanded "><a href="rendering_api_overview.html"><strong aria-hidden="true">13.</strong> API Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rendering_api_overview_model.html"><strong aria-hidden="true">13.1.</strong> Rendering model</a></li><li class="chapter-item expanded "><a href="rendering_api_events_overview.html"><strong aria-hidden="true">13.2.</strong> Events</a></li><li class="chapter-item expanded "><a href="rendering_api_overview_geometry.html"><strong aria-hidden="true">13.3.</strong> Geometry</a></li><li class="chapter-item expanded "><a href="rendering_api_shaders.html"><strong aria-hidden="true">13.4.</strong> Shaders</a></li><li class="chapter-item expanded "><a href="rendering_api_drawing.html"><strong aria-hidden="true">13.5.</strong> Drawing</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">UI</li><li class="chapter-item expanded "><a href="tutorial_ui_components.html"><strong aria-hidden="true">14.</strong> Tutorial: UI Components</a></li><li class="chapter-item expanded "><a href="tutorial_ui_layout.html"><strong aria-hidden="true">15.</strong> Tutorial: UI Layout</a></li><li class="chapter-item expanded "><a href="ui_api_overview.html"><strong aria-hidden="true">16.</strong> API Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ui_api_overview_components.html"><strong aria-hidden="true">16.1.</strong> UI Components</a></li><li class="chapter-item expanded "><a href="ui_api_overview_layout.html"><strong aria-hidden="true">16.2.</strong> Layout</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Misc</li><li class="chapter-item expanded "><a href="known_issues.html"><strong aria-hidden="true">17.</strong> Known Issues</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Zaplib docs</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="tutorial-hello-world-canvas"><a class="header" href="#tutorial-hello-world-canvas">Tutorial: Hello World Canvas</a></h1>
+<p>Let's build a simple Zaplib application that draws &quot;Hello, World!&quot; on the screen.</p>
+<p>First we create a <code>Cargo.toml</code> file with the Zaplib dependency:</p>
+<pre><code class="language-toml">[package]
+name = &quot;tutorial_hello_world_canvas&quot;
+version = &quot;0.0.1&quot;
+edition = &quot;2021&quot;
+
+[dependencies]
+zaplib = { path=&quot;../../main&quot; }
+</code></pre>
+<p>In <code>src/main.rs</code>, we need to define a main app to draw from:</p>
+<pre><code class="language-rust noplayground">#[derive(Default)]
+struct App {
+}
+
+impl App {
+    fn new(cx: &amp;mut Cx) -&gt; Self {
+        Self::default()
+    }
+
+    fn handle(&amp;mut self, cx: &amp;mut Cx, event: &amp;mut Event) {
+    }
+
+    fn draw(&amp;mut self, cx: &amp;mut Cx) {
+    }
+}
+
+main_app!(App);
+</code></pre>
+<p>Just like in <a href="./tutorial_hello_world_console.html">Tutorial: Hello World Console</a>, the <code>App</code> implements 3 main functions: <code>new</code>, <code>handle</code>, and <code>draw</code>. Next we create a window with some text in the <code>draw</code> function:</p>
+<pre><code class="language-rust noplayground">    fn draw(&amp;mut self, cx: &amp;mut Cx) {
+        self.window.begin_window(cx);
+        self.pass.begin_pass(cx, Vec4::color(&quot;0&quot;));
+        self.view.begin_view(cx, LayoutSize::FILL);
+
+        cx.begin_padding_box(Padding::vh(50., 50.));
+        TextIns::draw_walk(cx, &quot;Hello, World!&quot;, &amp;TextInsProps::default());
+        cx.end_padding_box();
+
+        self.view.end_view(cx);
+        self.pass.end_pass(cx);
+        self.window.end_window(cx);
+    }
+</code></pre>
+<ul>
+<li><code>window</code> refers to the main desktop or browser window.</li>
+<li><code>pass</code> refers to our rendering context. We specify a black background — we can use any hex color here.</li>
+<li><code>view</code> refers to our layout. We provide a <code>FILL</code> layout, which translates to 100% of the available width and height.</li>
+<li><code>begin_padding_box</code> adds a padding so that text doesn't overlap with the native window buttons.</li>
+<li><code>TextIns</code> is Zaplib's implementation for text rendering. We pass in our desired string and any formatting properties. We'll stick with default formatting for now.</li>
+</ul>
+<p>Add the relevant state to <code>App</code>:</p>
+<pre><code class="language-rust noplayground">#[derive(Default)]
+struct App {
+    window: Window,
+    pass: Pass,
+    view: View,
+}
+</code></pre>
+<p>You can run this full example with Cargo:</p>
+<pre><code class="language-bash">cargo run -p tutorial_hello_world_canvas
+</code></pre>
+<p><img src="./img/tutorial_hello_world_canvas.png" alt="" /></p>
+<p>Congratulations! You just did your first rendering in Zaplib. In the <a href="./tutorial_2d_rendering.html">next tutorial</a> we will cover how to do 2D rendering.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="bridge_api_workers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="tutorial_2d_rendering.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="bridge_api_workers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="tutorial_2d_rendering.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

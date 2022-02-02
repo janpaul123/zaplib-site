@@ -1,0 +1,176 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `zaplib&#x2F;components&#x2F;src&#x2F;skybox.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>skybox.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../zaplib_components/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1"> 1</span>
+<span id="2"> 2</span>
+<span id="3"> 3</span>
+<span id="4"> 4</span>
+<span id="5"> 5</span>
+<span id="6"> 6</span>
+<span id="7"> 7</span>
+<span id="8"> 8</span>
+<span id="9"> 9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">zaplib</span>::<span class="kw-2">*</span>;
+
+<span class="kw">fn</span> <span class="ident">build_geom</span>() -&gt; <span class="ident">Geometry</span> {
+    <span class="ident">Geometry3d::cube</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)
+}
+
+<span class="kw">static</span> <span class="ident">SHADER</span>: <span class="ident">Shader</span> <span class="op">=</span> <span class="ident">Shader</span> {
+    <span class="ident">build_geom</span>: <span class="prelude-val">Some</span>(<span class="ident">build_geom</span>),
+    <span class="ident">code_to_concatenate</span>: <span class="kw-2">&amp;</span>[
+        <span class="ident">Cx::STD_SHADER</span>,
+        <span class="ident">Geometry3d::SHADER</span>,
+        <span class="ident">DRAWCUBE_SHADER_PRELUDE</span>,
+        <span class="macro">code_fragment!</span>(
+            <span class="string">r#&quot;
+            const sky_color: vec4 = #000000;
+            const edge_color: vec4 = #111111;
+            const floor_color: vec4 = #8;
+
+            fn color_form_id() -&gt; vec4 {
+                if geom_id&gt;4.5 {
+                    return #f00;
+                }
+                if geom_id&gt;3.5 {
+                    return #0f0;
+                }
+                if geom_id&gt;2.5 {
+                    return #00f;
+                }
+                if geom_id&gt;1.5 {
+                    return #0ff;
+                }
+                return #f0f;
+            }
+            varying t:float;
+            fn vertex() -&gt; vec4 {
+
+                let model_view = camera_view * transform ;
+                return camera_projection * (model_view * vec4(
+                    geom_pos.x * cube_size.x + cube_pos.x,
+                    geom_pos.y * cube_size.y + cube_pos.y,
+                    geom_pos.z * cube_size.z + cube_pos.z + draw_zbias,
+                    1.
+                ));
+            }
+
+            fn pixel() -&gt; vec4 {
+                let x = geom_uv.x;
+                let y = geom_uv.y;
+                // walls
+                let sky = sky_color;
+                let edge = edge_color;
+                if geom_id&gt;4.5 || geom_id &gt; 3.5 || geom_id &lt; 1.5 {
+                    return mix(edge, sky, y);
+                }
+                // floor
+                if geom_id&gt;2.5 {
+                    let coord = geom_uv * 150.0;
+                    let grid = abs(
+                        fract(coord - 0.5) - 0.5
+                    ) / (abs(dFdx(coord)) + abs(dFdy(coord)));
+                    let line = min(grid.x, grid.y);
+                    let grid2 = floor_color + 0.4 * vec4(vec3(1.0 - min(line, 1.0)), 1.0);
+                    let uv2 = abs(2.0 * geom_uv - 1.0);
+                    return mix(grid2, edge, min(max(uv2.x, uv2.y) + 0.7, 1.0));
+                }
+                return sky;
+            }&quot;#</span>
+        ),
+    ],
+    ..<span class="ident">Shader::DEFAULT</span>
+};
+
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SkyBox</span>;
+
+<span class="kw">impl</span> <span class="ident">SkyBox</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw</span>(<span class="ident">cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Cx</span>, <span class="ident">world_origin</span>: <span class="ident">Vec3</span>) {
+        <span class="kw">let</span> <span class="ident">cube</span> <span class="op">=</span> <span class="ident">CubeIns</span> {
+            <span class="ident">cube_size</span>: <span class="ident">vec3</span>(<span class="number">200.</span>, <span class="number">100.</span>, <span class="number">200.</span>),
+            <span class="ident">cube_pos</span>: <span class="ident">vec3</span>(<span class="number">0.</span>, <span class="number">50.</span>, <span class="number">0.</span>) <span class="op">+</span> <span class="ident">world_origin</span>,
+            <span class="ident">transform</span>: <span class="ident">Mat4::identity</span>(),
+        };
+
+        <span class="ident">cx</span>.<span class="ident">add_instances</span>(<span class="kw-2">&amp;</span><span class="ident">SHADER</span>, <span class="kw-2">&amp;</span>[<span class="ident">cube</span>]);
+    }
+}
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="zaplib_components" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+</body></html>

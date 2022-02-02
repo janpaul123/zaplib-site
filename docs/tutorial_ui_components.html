@@ -1,0 +1,345 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Tutorial: UI Components - Zaplib docs</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="basic_tooling.html"><strong aria-hidden="true">3.</strong> Basic Tooling</a></li><li class="chapter-item expanded affix "><li class="part-title">Basic APIs</li><li class="chapter-item expanded "><a href="tutorial_hello_world_console.html"><strong aria-hidden="true">4.</strong> Tutorial: Hello World Console</a></li><li class="chapter-item expanded "><a href="tutorial_hello_thread.html"><strong aria-hidden="true">5.</strong> Tutorial: Hello Thread, Hello File</a></li><li class="chapter-item expanded "><a href="basic_api_overview.html"><strong aria-hidden="true">6.</strong> API Overview</a></li><li class="chapter-item expanded affix "><li class="part-title">JS-Rust Bridge</li><li class="chapter-item expanded "><a href="tutorial_js_rust_bridge.html"><strong aria-hidden="true">7.</strong> Tutorial: Integrating with JS</a></li><li class="chapter-item expanded "><a href="tutorial_sharing_data.html"><strong aria-hidden="true">8.</strong> Tutorial: Sharing Data</a></li><li class="chapter-item expanded "><a href="bridge_api.html"><strong aria-hidden="true">9.</strong> API Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="bridge_api_basics.html"><strong aria-hidden="true">9.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="bridge_api_params.html"><strong aria-hidden="true">9.2.</strong> Types of Parameters</a></li><li class="chapter-item expanded "><a href="bridge_api_workers.html"><strong aria-hidden="true">9.3.</strong> Web Workers</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rendering</li><li class="chapter-item expanded "><a href="tutorial_hello_world_canvas.html"><strong aria-hidden="true">10.</strong> Tutorial: Hello World Canvas</a></li><li class="chapter-item expanded "><a href="tutorial_2d_rendering.html"><strong aria-hidden="true">11.</strong> Tutorial: Rendering 2D Shapes</a></li><li class="chapter-item expanded "><a href="tutorial_3d_rendering.html"><strong aria-hidden="true">12.</strong> Tutorial: Rendering 3D Meshes</a></li><li class="chapter-item expanded "><a href="rendering_api_overview.html"><strong aria-hidden="true">13.</strong> API Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rendering_api_overview_model.html"><strong aria-hidden="true">13.1.</strong> Rendering model</a></li><li class="chapter-item expanded "><a href="rendering_api_events_overview.html"><strong aria-hidden="true">13.2.</strong> Events</a></li><li class="chapter-item expanded "><a href="rendering_api_overview_geometry.html"><strong aria-hidden="true">13.3.</strong> Geometry</a></li><li class="chapter-item expanded "><a href="rendering_api_shaders.html"><strong aria-hidden="true">13.4.</strong> Shaders</a></li><li class="chapter-item expanded "><a href="rendering_api_drawing.html"><strong aria-hidden="true">13.5.</strong> Drawing</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">UI</li><li class="chapter-item expanded "><a href="tutorial_ui_components.html" class="active"><strong aria-hidden="true">14.</strong> Tutorial: UI Components</a></li><li class="chapter-item expanded "><a href="tutorial_ui_layout.html"><strong aria-hidden="true">15.</strong> Tutorial: UI Layout</a></li><li class="chapter-item expanded "><a href="ui_api_overview.html"><strong aria-hidden="true">16.</strong> API Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ui_api_overview_components.html"><strong aria-hidden="true">16.1.</strong> UI Components</a></li><li class="chapter-item expanded "><a href="ui_api_overview_layout.html"><strong aria-hidden="true">16.2.</strong> Layout</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Misc</li><li class="chapter-item expanded "><a href="known_issues.html"><strong aria-hidden="true">17.</strong> Known Issues</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Zaplib docs</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="tutorial-ui-components"><a class="header" href="#tutorial-ui-components">Tutorial: UI Components</a></h1>
+<p>In this tutorial we will go through how to use some of the basic UI components provided by Zaplib:</p>
+<ul>
+<li><a href="#step-1-button"><code>Button</code></a></li>
+<li><a href="#step-2-floatslider"><code>FloatSlider</code></a></li>
+<li><a href="#step-3-scrollview"><code>ScrollView</code></a></li>
+</ul>
+<h2 id="step-1-button"><a class="header" href="#step-1-button">Step 1: <code>Button</code></a></h2>
+<p>Let's create button that would be simply incrementing a counter.</p>
+<p>Create a <code>Cargo.toml</code> with <code>zaplib</code> and <code>zaplib_components</code> dependencies crates:</p>
+<pre><code class="language-toml">[package]
+name = &quot;tutorial_ui_components&quot;
+version = &quot;0.0.1&quot;
+edition = &quot;2021&quot;
+
+[dependencies]
+zaplib = { path=&quot;../../main&quot; }
+zaplib_components = { path=&quot;../../components&quot; }
+</code></pre>
+<p>In <code>main.rs</code> include a library of components:</p>
+<pre><code class="language-rust noplayground">use zaplib_components::*;
+</code></pre>
+<p>Add a button and a counter to <code>App</code> struct:</p>
+<pre><code class="language-rust noplayground">#[derive(Default)]
+struct App {
+    window: Window,
+    pass: Pass,
+    view: View,
+    button: Button,
+    counter: i32,
+}
+</code></pre>
+<p>Modify the <code>draw</code> function to draw the button and the value of the counter:</p>
+<pre><code class="language-rust noplayground">    fn draw(&amp;mut self, cx: &amp;mut Cx) {
+        self.window.begin_window(cx);
+        self.pass.begin_pass(cx, Vec4::color(&quot;0&quot;));
+        self.view.begin_view(cx, LayoutSize::FILL);
+
+        cx.begin_padding_box(Padding::vh(50., 50.));
+        self.button.draw(cx, &quot;Increment Counter&quot;);
+        TextIns::draw_walk(cx, &amp;format!(&quot;Counter: {}&quot;, self.counter), &amp;TextInsProps::default());
+        cx.end_padding_box();
+
+        self.view.end_view(cx);
+        self.pass.end_pass(cx);
+        self.window.end_window(cx);
+    }
+</code></pre>
+<ul>
+<li><code>cx.begin_padding_box</code> adds the padding to application window</li>
+<li><code>button.draw</code> draws the button with the given label</li>
+<li><code>format!</code> creates the string with using <code>self.counter</code> value</li>
+<li><code>TextIns::draw_walk</code> draws the text on the screen</li>
+</ul>
+<p>Modify the <code>handle</code> function to increment the counter when the button was pressed:</p>
+<pre><code class="language-rust noplayground">    fn handle(&amp;mut self, cx: &amp;mut Cx, event: &amp;mut Event) {
+        if let ButtonEvent::Clicked = self.button.handle(cx, event) {
+            self.counter += 1;
+            cx.request_draw();
+        }
+    }
+</code></pre>
+<ul>
+<li><code>button.handle</code> returns enum with possible events this component could trigger. We check if the button was clicked (<code>ButtonEvent::Clicked</code>). Other options are <code>ButtonEvent::Down</code>, <code>ButtonEvent::Up</code> and <code>ButtonEvent::None</code>.</li>
+<li><code>cx.request_draw()</code> is called to re-render the application window.</li>
+</ul>
+<p>After pressing the button for a few times we can see the counter value changing:</p>
+<p><img src="./img/tutorial_ui_components_1.png" alt="" /></p>
+<h2 id="step-2-floatslider"><a class="header" href="#step-2-floatslider">Step 2: <code>FloatSlider</code></a></h2>
+<p>Now let's add the slider bar that would modify the same counter.</p>
+<p>Add <code>FloatSlider</code> to <code>App</code> struct:</p>
+<pre><code class="language-rust noplayground">struct App {
+    // ...
+    slider: FloatSlider,
+}
+</code></pre>
+<p>Draw the slider inside <code>draw</code> function:</p>
+<pre><code class="language-rust noplayground">        cx.begin_padding_box(Padding::vh(50., 50.));
+        self.button.draw(cx, &quot;Increment Counter&quot;);
+        TextIns::draw_walk(cx, &amp;format!(&quot;Counter: {}&quot;, self.counter), &amp;TextInsProps::default());
+
+        self.slider.draw(cx, self.counter as f32, 0., 100., Some(1.0), 1.0, None);
+        cx.end_padding_box();
+</code></pre>
+<ul>
+<li><code>slider.draw</code> draws the slider with current position at <code>self.counter</code> in a <code>0.</code> to <code>100.</code> range with step increments of <code>1.0</code>.</li>
+</ul>
+<p>Finally, connect the slider with the main application in <code>handle</code> function:</p>
+<pre><code class="language-rust noplayground">   fn handle(&amp;mut self, cx: &amp;mut Cx, event: &amp;mut Event) {
+       // ...
+
+       if let FloatSliderEvent::Change { scaled_value } = self.slider.handle(cx, event) {
+           self.counter = scaled_value as i32;
+           cx.request_draw();
+       }
+   }
+</code></pre>
+<p>Now we can see that counter value is controlled by both the button and the slider:</p>
+<p><img src="./img/tutorial_ui_components_2.png" alt="" /></p>
+<h2 id="step-3-scrollview"><a class="header" href="#step-3-scrollview">Step 3: <code>ScrollView</code></a></h2>
+<p>To illustrate the usage of <code>ScrollView</code> let's draw some long text on the screen. Modify the <code>draw</code> function to draw  rows equal to <code>self.counter</code> value:</p>
+<pre><code class="language-rust noplayground">        cx.begin_padding_box(Padding::vh(50., 50.));
+        self.button.draw(cx, &quot;Increment Counter&quot;);
+        TextIns::draw_walk(cx, &amp;format!(&quot;Counter: {}&quot;, self.counter), &amp;TextInsProps::default());
+
+        self.slider.draw(cx, self.counter as f32, 0., 100., Some(1.0), 1.0, None);
+
+        for value in 0..self.counter {
+            TextIns::draw_walk(cx, &amp;format!(&quot;row #{}&quot;, value), &amp;TextInsProps::default());
+        }
+
+        cx.end_padding_box();
+</code></pre>
+<p>As we can see the rows went beyond the bounds of the application window:</p>
+<p><img src="./img/tutorial_ui_components_3.png" alt="" /></p>
+<p>Let's fix this by adding a <code>ScrollView</code> component.</p>
+<p>Modify the <code>App</code> struct to include <code>ScrollView</code></p>
+<pre><code class="language-rust noplayground">struct App {
+    // ...
+    scroll_view: ScrollView,
+}
+</code></pre>
+<p>Update the <code>App::new</code> constructor:</p>
+<pre><code class="language-rust noplayground">    fn new(_cx: &amp;mut Cx) -&gt; Self {
+        App {
+            scroll_view: ScrollView::new_standard_vh(),
+            ..Self::default()
+        }
+    }
+</code></pre>
+<p>In the <code>draw</code> function add <code>begin_view</code>  and <code>end_view</code> around the text drawing block</p>
+<pre><code class="language-rust noplayground">        self.scroll_view.begin_view(cx, LayoutSize::FILL);
+        for value in 0..self.counter {
+            TextIns::draw_walk(cx, &amp;format!(&quot;row #{}&quot;, value), &amp;TextInsProps::default());
+        }
+        self.scroll_view.end_view(cx);
+</code></pre>
+<p>Finally, update the <code>handle</code> function to enable scrolling:</p>
+<pre><code class="language-rust noplayground">    fn handle(&amp;mut self, cx: &amp;mut Cx, event: &amp;mut Event) {
+        // ...
+        self.scroll_view.handle(cx, event);
+    }
+</code></pre>
+<ul>
+<li>We are not modifying the internal <code>App</code>'s state on scroll events, so we just ignore the return value of <code>scroll_view.handle</code> call</li>
+</ul>
+<p>You can run this full example with Cargo:</p>
+<pre><code class="language-bash">cargo run -p tutorial_ui_components
+</code></pre>
+<p><img src="./img/tutorial_ui_components_4.png" alt="" /></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="rendering_api_drawing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="tutorial_ui_layout.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="rendering_api_drawing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="tutorial_ui_layout.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

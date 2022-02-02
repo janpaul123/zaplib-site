@@ -1,0 +1,808 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `zaplib&#x2F;main&#x2F;src&#x2F;colors.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>colors.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../zaplib/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
+
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ALICEBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.941_176_5</span>, <span class="number">0.972_549</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ANTIQUEWHITE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.980_392_16</span>, <span class="number">0.921_568_63</span>, <span class="number">0.843_137_26</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AQUA</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AQUAMARINE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.498_039_22</span>, <span class="number">1.0</span>, <span class="number">0.831_372_56</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AZURE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.941_176_5</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BEIGE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.960_784_3</span>, <span class="number">0.960_784_3</span>, <span class="number">0.862_745_1</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BISQUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.894_117_65</span>, <span class="number">0.768_627_46</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLACK</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLANCHEDALMOND</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.921_568_63</span>, <span class="number">0.803_921_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUEVIOLET</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.541_176_5</span>, <span class="number">0.168_627_46</span>, <span class="number">0.886_274_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BROWN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.647_058_84</span>, <span class="number">0.164_705_89</span>, <span class="number">0.164_705_89</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BURLYWOOD</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.870_588_24</span>, <span class="number">0.721_568_64</span>, <span class="number">0.529_411_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CADETBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.372_549_03</span>, <span class="number">0.619_607_87</span>, <span class="number">0.627_451</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CHARTREUSE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.498_039_22</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CHOCOLATE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.823_529_4</span>, <span class="number">0.411_764_7</span>, <span class="number">0.117_647_06</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CORAL</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.498_039_22</span>, <span class="number">0.313_725_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CORNFLOWER</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.392_156_87</span>, <span class="number">0.584_313_75</span>, <span class="number">0.929_411_77</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CORNSILK</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.972_549</span>, <span class="number">0.862_745_1</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CRIMSON</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.862_745_1</span>, <span class="number">0.078_431_375</span>, <span class="number">0.235_294_12</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CYAN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.545_098_07</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKCYAN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.545_098_07</span>, <span class="number">0.545_098_07</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKGOLDENROD</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.721_568_64</span>, <span class="number">0.525_490_2</span>, <span class="number">0.043_137_256</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKGRAY</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.662_745_1</span>, <span class="number">0.662_745_1</span>, <span class="number">0.662_745_1</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKGREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.392_156_87</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKKHAKI</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.741_176_5</span>, <span class="number">0.717_647_1</span>, <span class="number">0.419_607_85</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKMAGENTA</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.545_098_07</span>, <span class="number">0.0</span>, <span class="number">0.545_098_07</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKOLIVEGREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.333_333_34</span>, <span class="number">0.419_607_85</span>, <span class="number">0.184_313_73</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKORANGE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.549_019_63</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKORCHID</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.6</span>, <span class="number">0.196_078_43</span>, <span class="number">0.8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKRED</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.545_098_07</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKSALMON</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.913_725_5</span>, <span class="number">0.588_235_3</span>, <span class="number">0.478_431_37</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKSEAGREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.560_784_34</span>, <span class="number">0.737_254_9</span>, <span class="number">0.560_784_34</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKSLATEBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.282_352_95</span>, <span class="number">0.239_215_69</span>, <span class="number">0.545_098_07</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKSLATEGRAY</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.184_313_73</span>, <span class="number">0.309_803_93</span>, <span class="number">0.309_803_93</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKTURQUOISE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.807_843_15</span>, <span class="number">0.819_607_85</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DARKVIOLET</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.580_392_2</span>, <span class="number">0.0</span>, <span class="number">0.827_451</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPPINK</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.078_431_375</span>, <span class="number">0.576_470_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPSKYBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.749_019_6</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DIMGRAY</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.411_764_7</span>, <span class="number">0.411_764_7</span>, <span class="number">0.411_764_7</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DODGERBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.117_647_06</span>, <span class="number">0.564_705_9</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_FIREBRICK</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.698_039_23</span>, <span class="number">0.133_333_34</span>, <span class="number">0.133_333_34</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_FLORALWHITE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.980_392_16</span>, <span class="number">0.941_176_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_FORESTGREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.133_333_34</span>, <span class="number">0.545_098_07</span>, <span class="number">0.133_333_34</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_FUCHSIA</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GAINSBORO</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.862_745_1</span>, <span class="number">0.862_745_1</span>, <span class="number">0.862_745_1</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GHOSTWHITE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.972_549</span>, <span class="number">0.972_549</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GOLD</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.843_137_26</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GOLDENROD</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.854_901_97</span>, <span class="number">0.647_058_84</span>, <span class="number">0.125_490_2</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GRAY</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.745_098_05</span>, <span class="number">0.745_098_05</span>, <span class="number">0.745_098_05</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_WEBGRAY</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.501_960_8</span>, <span class="number">0.501_960_8</span>, <span class="number">0.501_960_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_WEBGREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.501_960_8</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREENYELLOW</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.678_431_4</span>, <span class="number">1.0</span>, <span class="number">0.184_313_73</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_HONEYDEW</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.941_176_5</span>, <span class="number">1.0</span>, <span class="number">0.941_176_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_HOTPINK</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.411_764_7</span>, <span class="number">0.705_882_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIANRED</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.803_921_6</span>, <span class="number">0.360_784_32</span>, <span class="number">0.360_784_32</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIGO</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.294_117_66</span>, <span class="number">0.0</span>, <span class="number">0.509_803_95</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_IVORY</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.941_176_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_KHAKI</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.941_176_5</span>, <span class="number">0.901_960_8</span>, <span class="number">0.549_019_63</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LAVENDER</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.901_960_8</span>, <span class="number">0.901_960_8</span>, <span class="number">0.980_392_16</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LAVENDERBLUSH</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.941_176_5</span>, <span class="number">0.960_784_3</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LAWNGREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.486_274_5</span>, <span class="number">0.988_235_3</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LEMONCHIFFON</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.980_392_16</span>, <span class="number">0.803_921_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.678_431_4</span>, <span class="number">0.847_058_83</span>, <span class="number">0.901_960_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTCORAL</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.941_176_5</span>, <span class="number">0.501_960_8</span>, <span class="number">0.501_960_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTCYAN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.878_431_4</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGOLDENROD</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.980_392_16</span>, <span class="number">0.980_392_16</span>, <span class="number">0.823_529_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGRAY</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.827_451</span>, <span class="number">0.827_451</span>, <span class="number">0.827_451</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.564_705_9</span>, <span class="number">0.933_333_34</span>, <span class="number">0.564_705_9</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTPINK</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.713_725_5</span>, <span class="number">0.756_862_76</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTSALMON</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.627_451</span>, <span class="number">0.478_431_37</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTSEAGREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.125_490_2</span>, <span class="number">0.698_039_23</span>, <span class="number">0.666_666_7</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTSKYBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.529_411_8</span>, <span class="number">0.807_843_15</span>, <span class="number">0.980_392_16</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTSLATEGRAY</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.466_666_67</span>, <span class="number">0.533_333_36</span>, <span class="number">0.6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTSTEELBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.690_196_1</span>, <span class="number">0.768_627_46</span>, <span class="number">0.870_588_24</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTYELLOW</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.878_431_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIME</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIMEGREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.196_078_43</span>, <span class="number">0.803_921_6</span>, <span class="number">0.196_078_43</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LINEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.980_392_16</span>, <span class="number">0.941_176_5</span>, <span class="number">0.901_960_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_MAGENTA</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_MAROON</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.690_196_1</span>, <span class="number">0.188_235_3</span>, <span class="number">0.376_470_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_WEBMAROON</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.498_039_22</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_MEDIUMAQUAMARINE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.4</span>, <span class="number">0.803_921_6</span>, <span class="number">0.666_666_7</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_MEDIUMBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.803_921_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_MEDIUMORCHID</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.729_411_8</span>, <span class="number">0.333_333_34</span>, <span class="number">0.827_451</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_MEDIUMPURPLE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.576_470_6</span>, <span class="number">0.439_215_7</span>, <span class="number">0.858_823_54</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_MEDIUMSEAGREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.235_294_12</span>, <span class="number">0.701_960_8</span>, <span class="number">0.443_137_26</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_MEDIUMSLATEBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.482_352_94</span>, <span class="number">0.407_843_14</span>, <span class="number">0.933_333_34</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_MEDIUMSPRINGGREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.980_392_16</span>, <span class="number">0.603_921_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_MEDIUMTURQUOISE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.282_352_95</span>, <span class="number">0.819_607_85</span>, <span class="number">0.8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_MEDIUMVIOLETRED</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.780_392_17</span>, <span class="number">0.082_352_94</span>, <span class="number">0.521_568_66</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_MIDNIGHTBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.098_039_22</span>, <span class="number">0.098_039_22</span>, <span class="number">0.439_215_7</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_MINTCREAM</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.960_784_3</span>, <span class="number">1.0</span>, <span class="number">0.980_392_16</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_MISTYROSE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.894_117_65</span>, <span class="number">0.882_352_95</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_MOCCASIN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.894_117_65</span>, <span class="number">0.709_803_94</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_NAVAJOWHITE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.870_588_24</span>, <span class="number">0.678_431_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_NAVYBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.501_960_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_OLDLACE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.992_156_86</span>, <span class="number">0.960_784_3</span>, <span class="number">0.901_960_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_OLIVE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.501_960_8</span>, <span class="number">0.501_960_8</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_OLIVEDRAB</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.419_607_85</span>, <span class="number">0.556_862_8</span>, <span class="number">0.137_254_91</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.647_058_84</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGERED</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.270_588_25</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORCHID</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.854_901_97</span>, <span class="number">0.439_215_7</span>, <span class="number">0.839_215_7</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PALEGOLDENROD</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.933_333_34</span>, <span class="number">0.909_803_9</span>, <span class="number">0.666_666_7</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PALEGREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.596_078_46</span>, <span class="number">0.984_313_7</span>, <span class="number">0.596_078_46</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PALETURQUOISE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.686_274_5</span>, <span class="number">0.933_333_34</span>, <span class="number">0.933_333_34</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PALEVIOLETRED</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.858_823_54</span>, <span class="number">0.439_215_7</span>, <span class="number">0.576_470_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PAPAYAWHIP</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.937_254_9</span>, <span class="number">0.835_294_1</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PEACHPUFF</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.854_901_97</span>, <span class="number">0.725_490_2</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PERU</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.803_921_6</span>, <span class="number">0.521_568_66</span>, <span class="number">0.247_058_82</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PINK</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.752_941_2</span>, <span class="number">0.796_078_44</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PLUM</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.866_666_7</span>, <span class="number">0.627_451</span>, <span class="number">0.866_666_7</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_POWDERBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.690_196_1</span>, <span class="number">0.878_431_4</span>, <span class="number">0.901_960_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PURPLE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.627_451</span>, <span class="number">0.125_490_2</span>, <span class="number">0.941_176_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_WEBPURPLE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.498_039_22</span>, <span class="number">0.0</span>, <span class="number">0.498_039_22</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_REBECCAPURPLE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.4</span>, <span class="number">0.2</span>, <span class="number">0.6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_RED</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ROSYBROWN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.737_254_9</span>, <span class="number">0.560_784_34</span>, <span class="number">0.560_784_34</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ROYALBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.254_901_98</span>, <span class="number">0.411_764_7</span>, <span class="number">0.882_352_95</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_SADDLEBROWN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.545_098_07</span>, <span class="number">0.270_588_25</span>, <span class="number">0.074_509_81</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_SALMON</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.980_392_16</span>, <span class="number">0.501_960_8</span>, <span class="number">0.447_058_83</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_SANDYBROWN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.956_862_75</span>, <span class="number">0.643_137_3</span>, <span class="number">0.376_470_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_SEAGREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.180_392_16</span>, <span class="number">0.545_098_07</span>, <span class="number">0.341_176_48</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_SEASHELL</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.960_784_3</span>, <span class="number">0.933_333_34</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_SIENNA</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.627_451</span>, <span class="number">0.321_568_64</span>, <span class="number">0.176_470_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_SILVER</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.752_941_2</span>, <span class="number">0.752_941_2</span>, <span class="number">0.752_941_2</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_SKYBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.529_411_8</span>, <span class="number">0.807_843_15</span>, <span class="number">0.921_568_63</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_SLATEBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.415_686_28</span>, <span class="number">0.352_941_2</span>, <span class="number">0.803_921_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_SLATEGRAY</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.439_215_7</span>, <span class="number">0.501_960_8</span>, <span class="number">0.564_705_9</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_SNOW</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.980_392_16</span>, <span class="number">0.980_392_16</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_SPRINGGREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.498_039_22</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_STEELBLUE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.274_509_82</span>, <span class="number">0.509_803_95</span>, <span class="number">0.705_882_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TAN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.823_529_4</span>, <span class="number">0.705_882_4</span>, <span class="number">0.549_019_63</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TEAL</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.501_960_8</span>, <span class="number">0.501_960_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_THISTLE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.847_058_83</span>, <span class="number">0.749_019_6</span>, <span class="number">0.847_058_83</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TOMATO</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.388_235_3</span>, <span class="number">0.278_431_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TURQUOISE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.250_980_4</span>, <span class="number">0.878_431_4</span>, <span class="number">0.815_686_3</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_VIOLET</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.933_333_34</span>, <span class="number">0.509_803_95</span>, <span class="number">0.933_333_34</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_WHEAT</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.960_784_3</span>, <span class="number">0.870_588_24</span>, <span class="number">0.701_960_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_WHITE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_WHITESMOKE</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.960_784_3</span>, <span class="number">0.960_784_3</span>, <span class="number">0.960_784_3</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOW</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOWGREEN</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.603_921_6</span>, <span class="number">0.803_921_6</span>, <span class="number">0.196_078_43</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_RED500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.956_862_75</span>, <span class="number">0.262_745_1</span>, <span class="number">0.211_764_71</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_RED50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.921_568_63</span>, <span class="number">0.933_333_34</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_RED100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.803_921_6</span>, <span class="number">0.823_529_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_RED200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.937_254_9</span>, <span class="number">0.603_921_6</span>, <span class="number">0.603_921_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_RED300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.898_039_2</span>, <span class="number">0.450_980_4</span>, <span class="number">0.450_980_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_RED400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.937_254_9</span>, <span class="number">0.325_490_2</span>, <span class="number">0.313_725_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_RED600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.898_039_2</span>, <span class="number">0.223_529_41</span>, <span class="number">0.207_843_14</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_RED700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.827_451</span>, <span class="number">0.184_313_73</span>, <span class="number">0.184_313_73</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_RED800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.776_470_6</span>, <span class="number">0.156_862_75</span>, <span class="number">0.156_862_75</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_RED900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.717_647_1</span>, <span class="number">0.109_803_92</span>, <span class="number">0.109_803_92</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_REDA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.541_176_5</span>, <span class="number">0.501_960_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_REDA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.321_568_64</span>, <span class="number">0.321_568_64</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_REDA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.090_196_08</span>, <span class="number">0.266_666_68</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_REDA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.835_294_1</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PINK500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.913_725_5</span>, <span class="number">0.117_647_06</span>, <span class="number">0.388_235_3</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PINK50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.988_235_3</span>, <span class="number">0.894_117_65</span>, <span class="number">0.925_490_2</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PINK100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.972_549</span>, <span class="number">0.733_333_35</span>, <span class="number">0.815_686_3</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PINK200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.956_862_75</span>, <span class="number">0.560_784_34</span>, <span class="number">0.694_117_67</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PINK300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.941_176_5</span>, <span class="number">0.384_313_73</span>, <span class="number">0.572_549_05</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PINK400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.925_490_2</span>, <span class="number">0.250_980_4</span>, <span class="number">0.478_431_37</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PINK600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.847_058_83</span>, <span class="number">0.105_882_354</span>, <span class="number">0.376_470_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PINK700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.760_784_3</span>, <span class="number">0.094_117_65</span>, <span class="number">0.356_862_75</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PINK800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.678_431_4</span>, <span class="number">0.078_431_375</span>, <span class="number">0.341_176_48</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PINK900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.533_333_36</span>, <span class="number">0.054_901_96</span>, <span class="number">0.309_803_93</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PINKA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.501_960_8</span>, <span class="number">0.670_588_25</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PINKA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.250_980_4</span>, <span class="number">0.505_882_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PINKA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.960_784_3</span>, <span class="number">0.0</span>, <span class="number">0.341_176_48</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PINKA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.772_549_03</span>, <span class="number">0.066_666_67</span>, <span class="number">0.384_313_73</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PURPLE500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.611_764_7</span>, <span class="number">0.152_941_18</span>, <span class="number">0.690_196_1</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PURPLE50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.952_941_2</span>, <span class="number">0.898_039_2</span>, <span class="number">0.960_784_3</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PURPLE100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.882_352_95</span>, <span class="number">0.745_098_05</span>, <span class="number">0.905_882_36</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PURPLE200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.807_843_15</span>, <span class="number">0.576_470_6</span>, <span class="number">0.847_058_83</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PURPLE300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.729_411_8</span>, <span class="number">0.407_843_14</span>, <span class="number">0.784_313_74</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PURPLE400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.670_588_25</span>, <span class="number">0.278_431_4</span>, <span class="number">0.737_254_9</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PURPLE600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.556_862_8</span>, <span class="number">0.141_176_48</span>, <span class="number">0.666_666_7</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PURPLE700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.482_352_94</span>, <span class="number">0.121_568_63</span>, <span class="number">0.635_294_14</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PURPLE800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.415_686_28</span>, <span class="number">0.105_882_354</span>, <span class="number">0.603_921_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PURPLE900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.290_196_1</span>, <span class="number">0.078_431_375</span>, <span class="number">0.549_019_63</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PURPLEA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.917_647_06</span>, <span class="number">0.501_960_8</span>, <span class="number">0.988_235_3</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PURPLEA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.878_431_4</span>, <span class="number">0.250_980_4</span>, <span class="number">0.984_313_7</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PURPLEA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.835_294_1</span>, <span class="number">0.0</span>, <span class="number">0.976_470_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_PURPLEA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.666_666_7</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPPURPLE500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.403_921_57</span>, <span class="number">0.227_450_98</span>, <span class="number">0.717_647_1</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPPURPLE50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.929_411_77</span>, <span class="number">0.905_882_36</span>, <span class="number">0.964_705_9</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPPURPLE100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.819_607_85</span>, <span class="number">0.768_627_46</span>, <span class="number">0.913_725_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPPURPLE200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.701_960_8</span>, <span class="number">0.615_686_3</span>, <span class="number">0.858_823_54</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPPURPLE300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.584_313_75</span>, <span class="number">0.458_823_53</span>, <span class="number">0.803_921_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPPURPLE400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.494_117_65</span>, <span class="number">0.341_176_48</span>, <span class="number">0.760_784_3</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPPURPLE600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.368_627_46</span>, <span class="number">0.207_843_14</span>, <span class="number">0.694_117_67</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPPURPLE700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.317_647_07</span>, <span class="number">0.176_470_6</span>, <span class="number">0.658_823_55</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPPURPLE800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.270_588_25</span>, <span class="number">0.152_941_18</span>, <span class="number">0.627_451</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPPURPLE900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.192_156_87</span>, <span class="number">0.105_882_354</span>, <span class="number">0.572_549_05</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPPURPLEA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.701_960_8</span>, <span class="number">0.533_333_36</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPPURPLEA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.486_274_5</span>, <span class="number">0.301_960_8</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPPURPLEA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.396_078_44</span>, <span class="number">0.121_568_63</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPPURPLEA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.384_313_73</span>, <span class="number">0.0</span>, <span class="number">0.917_647_06</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIGO500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.247_058_82</span>, <span class="number">0.317_647_07</span>, <span class="number">0.709_803_94</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIGO50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.909_803_9</span>, <span class="number">0.917_647_06</span>, <span class="number">0.964_705_9</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIGO100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.772_549_03</span>, <span class="number">0.792_156_9</span>, <span class="number">0.913_725_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIGO200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.623_529_43</span>, <span class="number">0.658_823_55</span>, <span class="number">0.854_901_97</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIGO300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.474_509_8</span>, <span class="number">0.525_490_2</span>, <span class="number">0.796_078_44</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIGO400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.360_784_32</span>, <span class="number">0.419_607_85</span>, <span class="number">0.752_941_2</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIGO600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.223_529_41</span>, <span class="number">0.286_274_52</span>, <span class="number">0.670_588_25</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIGO700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.188_235_3</span>, <span class="number">0.247_058_82</span>, <span class="number">0.623_529_43</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIGO800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.156_862_75</span>, <span class="number">0.207_843_14</span>, <span class="number">0.576_470_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIGO900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.101_960_786</span>, <span class="number">0.137_254_91</span>, <span class="number">0.494_117_65</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIGOA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.549_019_63</span>, <span class="number">0.619_607_87</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIGOA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.325_490_2</span>, <span class="number">0.427_450_98</span>, <span class="number">0.996_078_43</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIGOA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.239_215_69</span>, <span class="number">0.352_941_2</span>, <span class="number">0.996_078_43</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_INDIGOA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.188_235_3</span>, <span class="number">0.309_803_93</span>, <span class="number">0.996_078_43</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUE500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.129_411_77</span>, <span class="number">0.588_235_3</span>, <span class="number">0.952_941_2</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUE50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.890_196_1</span>, <span class="number">0.949_019_6</span>, <span class="number">0.992_156_86</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUE100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.733_333_35</span>, <span class="number">0.870_588_24</span>, <span class="number">0.984_313_7</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUE200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.564_705_9</span>, <span class="number">0.792_156_9</span>, <span class="number">0.976_470_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUE300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.392_156_87</span>, <span class="number">0.709_803_94</span>, <span class="number">0.964_705_9</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUE400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.258_823_54</span>, <span class="number">0.647_058_84</span>, <span class="number">0.960_784_3</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUE600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.117_647_06</span>, <span class="number">0.533_333_36</span>, <span class="number">0.898_039_2</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUE700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.098_039_22</span>, <span class="number">0.462_745_1</span>, <span class="number">0.823_529_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUE800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.082_352_94</span>, <span class="number">0.396_078_44</span>, <span class="number">0.752_941_2</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUE900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.050_980_393</span>, <span class="number">0.278_431_4</span>, <span class="number">0.631_372_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUEA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.509_803_95</span>, <span class="number">0.694_117_67</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUEA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.266_666_68</span>, <span class="number">0.541_176_5</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUEA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.160_784_32</span>, <span class="number">0.474_509_8</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUEA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.160_784_32</span>, <span class="number">0.384_313_73</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTBLUE500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.011_764_706</span>, <span class="number">0.662_745_1</span>, <span class="number">0.956_862_75</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTBLUE50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.882_352_95</span>, <span class="number">0.960_784_3</span>, <span class="number">0.996_078_43</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTBLUE100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.701_960_8</span>, <span class="number">0.898_039_2</span>, <span class="number">0.988_235_3</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTBLUE200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.505_882_4</span>, <span class="number">0.831_372_56</span>, <span class="number">0.980_392_16</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTBLUE300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.309_803_93</span>, <span class="number">0.764_705_9</span>, <span class="number">0.968_627_45</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTBLUE400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.160_784_32</span>, <span class="number">0.713_725_5</span>, <span class="number">0.964_705_9</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTBLUE600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.011_764_706</span>, <span class="number">0.607_843_16</span>, <span class="number">0.898_039_2</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTBLUE700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.007_843_138</span>, <span class="number">0.533_333_36</span>, <span class="number">0.819_607_85</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTBLUE800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.007_843_138</span>, <span class="number">0.466_666_67</span>, <span class="number">0.741_176_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTBLUE900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.003_921_569</span>, <span class="number">0.341_176_48</span>, <span class="number">0.607_843_16</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTBLUEA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.501_960_8</span>, <span class="number">0.847_058_83</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTBLUEA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.250_980_4</span>, <span class="number">0.768_627_46</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTBLUEA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.690_196_1</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTBLUEA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.568_627_5</span>, <span class="number">0.917_647_06</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CYAN500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.737_254_9</span>, <span class="number">0.831_372_56</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CYAN50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.878_431_4</span>, <span class="number">0.968_627_45</span>, <span class="number">0.980_392_16</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CYAN100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.698_039_23</span>, <span class="number">0.921_568_63</span>, <span class="number">0.949_019_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CYAN200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.501_960_8</span>, <span class="number">0.870_588_24</span>, <span class="number">0.917_647_06</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CYAN300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.301_960_8</span>, <span class="number">0.815_686_3</span>, <span class="number">0.882_352_95</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CYAN400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.149_019_61</span>, <span class="number">0.776_470_6</span>, <span class="number">0.854_901_97</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CYAN600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.674_509_8</span>, <span class="number">0.756_862_76</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CYAN700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.592_156_9</span>, <span class="number">0.654_902</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CYAN800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.513_725_5</span>, <span class="number">0.560_784_34</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CYAN900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.376_470_6</span>, <span class="number">0.392_156_87</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CYANA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.517_647_1</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CYANA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.094_117_65</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CYANA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.898_039_2</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_CYANA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.721_568_64</span>, <span class="number">0.831_372_56</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TEAL500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.588_235_3</span>, <span class="number">0.533_333_36</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TEAL50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.878_431_4</span>, <span class="number">0.949_019_6</span>, <span class="number">0.945_098_04</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TEAL100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.698_039_23</span>, <span class="number">0.874_509_8</span>, <span class="number">0.858_823_54</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TEAL200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.501_960_8</span>, <span class="number">0.796_078_44</span>, <span class="number">0.768_627_46</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TEAL300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.301_960_8</span>, <span class="number">0.713_725_5</span>, <span class="number">0.674_509_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TEAL400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.149_019_61</span>, <span class="number">0.650_980_4</span>, <span class="number">0.603_921_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TEAL600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.537_254_9</span>, <span class="number">0.482_352_94</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TEAL700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.474_509_8</span>, <span class="number">0.419_607_85</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TEAL800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.411_764_7</span>, <span class="number">0.360_784_32</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TEAL900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.301_960_8</span>, <span class="number">0.250_980_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TEALA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.654_902</span>, <span class="number">1.0</span>, <span class="number">0.921_568_63</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TEALA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.392_156_87</span>, <span class="number">1.0</span>, <span class="number">0.854_901_97</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TEALA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.113_725_49</span>, <span class="number">0.913_725_5</span>, <span class="number">0.713_725_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_TEALA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.749_019_6</span>, <span class="number">0.647_058_84</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREEN500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.298_039_23</span>, <span class="number">0.686_274_5</span>, <span class="number">0.313_725_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREEN50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.909_803_9</span>, <span class="number">0.960_784_3</span>, <span class="number">0.913_725_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREEN100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.784_313_74</span>, <span class="number">0.901_960_8</span>, <span class="number">0.788_235_3</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREEN200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.647_058_84</span>, <span class="number">0.839_215_7</span>, <span class="number">0.654_902</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREEN300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.505_882_4</span>, <span class="number">0.780_392_17</span>, <span class="number">0.517_647_1</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREEN400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.4</span>, <span class="number">0.733_333_35</span>, <span class="number">0.415_686_28</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREEN600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.262_745_1</span>, <span class="number">0.627_451</span>, <span class="number">0.278_431_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREEN700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.219_607_84</span>, <span class="number">0.556_862_8</span>, <span class="number">0.235_294_12</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREEN800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.180_392_16</span>, <span class="number">0.490_196_08</span>, <span class="number">0.196_078_43</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREEN900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.105_882_354</span>, <span class="number">0.368_627_46</span>, <span class="number">0.125_490_2</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREENA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.725_490_2</span>, <span class="number">0.964_705_9</span>, <span class="number">0.792_156_9</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREENA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.411_764_7</span>, <span class="number">0.941_176_5</span>, <span class="number">0.682_352_96</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREENA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.901_960_8</span>, <span class="number">0.462_745_1</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREENA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.0</span>, <span class="number">0.784_313_74</span>, <span class="number">0.325_490_2</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGREEN500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.545_098_07</span>, <span class="number">0.764_705_9</span>, <span class="number">0.290_196_1</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGREEN50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.945_098_04</span>, <span class="number">0.972_549</span>, <span class="number">0.913_725_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGREEN100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.862_745_1</span>, <span class="number">0.929_411_77</span>, <span class="number">0.784_313_74</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGREEN200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.772_549_03</span>, <span class="number">0.882_352_95</span>, <span class="number">0.647_058_84</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGREEN300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.682_352_96</span>, <span class="number">0.835_294_1</span>, <span class="number">0.505_882_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGREEN400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.611_764_7</span>, <span class="number">0.8</span>, <span class="number">0.396_078_44</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGREEN600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.486_274_5</span>, <span class="number">0.701_960_8</span>, <span class="number">0.258_823_54</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGREEN700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.407_843_14</span>, <span class="number">0.623_529_43</span>, <span class="number">0.219_607_84</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGREEN800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.333_333_34</span>, <span class="number">0.545_098_07</span>, <span class="number">0.184_313_73</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGREEN900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.2</span>, <span class="number">0.411_764_7</span>, <span class="number">0.117_647_06</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGREENA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.8</span>, <span class="number">1.0</span>, <span class="number">0.564_705_9</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGREENA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.698_039_23</span>, <span class="number">1.0</span>, <span class="number">0.349_019_62</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGREENA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.462_745_1</span>, <span class="number">1.0</span>, <span class="number">0.011_764_706</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIGHTGREENA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.392_156_87</span>, <span class="number">0.866_666_7</span>, <span class="number">0.090_196_08</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIME500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.803_921_6</span>, <span class="number">0.862_745_1</span>, <span class="number">0.223_529_41</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIME50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.976_470_6</span>, <span class="number">0.984_313_7</span>, <span class="number">0.905_882_36</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIME100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.941_176_5</span>, <span class="number">0.956_862_75</span>, <span class="number">0.764_705_9</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIME200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.901_960_8</span>, <span class="number">0.933_333_34</span>, <span class="number">0.611_764_7</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIME300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.862_745_1</span>, <span class="number">0.905_882_36</span>, <span class="number">0.458_823_53</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIME400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.831_372_56</span>, <span class="number">0.882_352_95</span>, <span class="number">0.341_176_48</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIME600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.752_941_2</span>, <span class="number">0.792_156_9</span>, <span class="number">0.2</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIME700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.686_274_5</span>, <span class="number">0.705_882_4</span>, <span class="number">0.168_627_46</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIME800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.619_607_87</span>, <span class="number">0.615_686_3</span>, <span class="number">0.141_176_48</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIME900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.509_803_95</span>, <span class="number">0.466_666_67</span>, <span class="number">0.090_196_08</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIMEA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.956_862_75</span>, <span class="number">1.0</span>, <span class="number">0.505_882_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIMEA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.933_333_34</span>, <span class="number">1.0</span>, <span class="number">0.254_901_98</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIMEA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.776_470_6</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_LIMEA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.682_352_96</span>, <span class="number">0.917_647_06</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOW500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.921_568_63</span>, <span class="number">0.231_372_55</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOW50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.992_156_86</span>, <span class="number">0.905_882_36</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOW100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.976_470_6</span>, <span class="number">0.768_627_46</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOW200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.960_784_3</span>, <span class="number">0.615_686_3</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOW300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.945_098_04</span>, <span class="number">0.462_745_1</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOW400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.933_333_34</span>, <span class="number">0.345_098_05</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOW600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.992_156_86</span>, <span class="number">0.847_058_83</span>, <span class="number">0.207_843_14</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOW700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.984_313_7</span>, <span class="number">0.752_941_2</span>, <span class="number">0.176_470_6</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOW800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.976_470_6</span>, <span class="number">0.658_823_55</span>, <span class="number">0.145_098_05</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOW900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.960_784_3</span>, <span class="number">0.498_039_22</span>, <span class="number">0.090_196_08</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOWA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.552_941_2</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOWA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOWA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.917_647_06</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_YELLOWA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.839_215_7</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AMBER500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.756_862_76</span>, <span class="number">0.027_450_98</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AMBER50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.972_549</span>, <span class="number">0.882_352_95</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AMBER100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.925_490_2</span>, <span class="number">0.701_960_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AMBER200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.878_431_4</span>, <span class="number">0.509_803_95</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AMBER300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.835_294_1</span>, <span class="number">0.309_803_93</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AMBER400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.792_156_9</span>, <span class="number">0.156_862_75</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AMBER600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.701_960_8</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AMBER700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.627_451</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AMBER800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.560_784_34</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AMBER900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.435_294_12</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AMBERA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.898_039_2</span>, <span class="number">0.498_039_22</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AMBERA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.843_137_26</span>, <span class="number">0.250_980_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AMBERA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.768_627_46</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_AMBERA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.670_588_25</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGE500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.596_078_46</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGE50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.952_941_2</span>, <span class="number">0.878_431_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGE100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.878_431_4</span>, <span class="number">0.698_039_23</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGE200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.8</span>, <span class="number">0.501_960_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGE300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.717_647_1</span>, <span class="number">0.301_960_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGE400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.654_902</span>, <span class="number">0.149_019_61</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGE600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.984_313_7</span>, <span class="number">0.549_019_63</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGE700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.960_784_3</span>, <span class="number">0.486_274_5</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGE800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.937_254_9</span>, <span class="number">0.423_529_42</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGE900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.901_960_8</span>, <span class="number">0.317_647_07</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGEA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.819_607_85</span>, <span class="number">0.501_960_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGEA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.670_588_25</span>, <span class="number">0.250_980_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGEA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.568_627_5</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_ORANGEA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.427_450_98</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPORANGE500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.341_176_48</span>, <span class="number">0.133_333_34</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPORANGE50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.984_313_7</span>, <span class="number">0.913_725_5</span>, <span class="number">0.905_882_36</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPORANGE100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.8</span>, <span class="number">0.737_254_9</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPORANGE200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.670_588_25</span>, <span class="number">0.568_627_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPORANGE300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.541_176_5</span>, <span class="number">0.396_078_44</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPORANGE400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.439_215_7</span>, <span class="number">0.262_745_1</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPORANGE600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.956_862_75</span>, <span class="number">0.317_647_07</span>, <span class="number">0.117_647_06</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPORANGE700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.901_960_8</span>, <span class="number">0.290_196_1</span>, <span class="number">0.098_039_22</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPORANGE800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.847_058_83</span>, <span class="number">0.262_745_1</span>, <span class="number">0.082_352_94</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPORANGE900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.749_019_6</span>, <span class="number">0.211_764_71</span>, <span class="number">0.047_058_824</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPORANGEA100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.619_607_87</span>, <span class="number">0.501_960_8</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPORANGEA200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.431_372_55</span>, <span class="number">0.250_980_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPORANGEA400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">1.0</span>, <span class="number">0.239_215_69</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_DEEPORANGEA700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.866_666_7</span>, <span class="number">0.172_549_02</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BROWN500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.474_509_8</span>, <span class="number">0.333_333_34</span>, <span class="number">0.282_352_95</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BROWN50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.937_254_9</span>, <span class="number">0.921_568_63</span>, <span class="number">0.913_725_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BROWN100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.843_137_26</span>, <span class="number">0.8</span>, <span class="number">0.784_313_74</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BROWN200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.737_254_9</span>, <span class="number">0.666_666_7</span>, <span class="number">0.643_137_3</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BROWN300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.631_372_6</span>, <span class="number">0.533_333_36</span>, <span class="number">0.498_039_22</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BROWN400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.552_941_2</span>, <span class="number">0.431_372_55</span>, <span class="number">0.388_235_3</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BROWN600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.427_450_98</span>, <span class="number">0.298_039_23</span>, <span class="number">0.254_901_98</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BROWN700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.364_705_9</span>, <span class="number">0.250_980_4</span>, <span class="number">0.215_686_28</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BROWN800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.305_882_36</span>, <span class="number">0.203_921_57</span>, <span class="number">0.180_392_16</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BROWN900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.243_137_26</span>, <span class="number">0.152_941_18</span>, <span class="number">0.137_254_91</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREY500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.619_607_87</span>, <span class="number">0.619_607_87</span>, <span class="number">0.619_607_87</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREY50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.980_392_16</span>, <span class="number">0.980_392_16</span>, <span class="number">0.980_392_16</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREY100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.960_784_3</span>, <span class="number">0.960_784_3</span>, <span class="number">0.960_784_3</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREY200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.933_333_34</span>, <span class="number">0.933_333_34</span>, <span class="number">0.933_333_34</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREY300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.878_431_4</span>, <span class="number">0.878_431_4</span>, <span class="number">0.878_431_4</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREY400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.741_176_5</span>, <span class="number">0.741_176_5</span>, <span class="number">0.741_176_5</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREY600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.458_823_53</span>, <span class="number">0.458_823_53</span>, <span class="number">0.458_823_53</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREY700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.380_392_16</span>, <span class="number">0.380_392_16</span>, <span class="number">0.380_392_16</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREY800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.258_823_54</span>, <span class="number">0.258_823_54</span>, <span class="number">0.258_823_54</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREY850</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.192_156_87</span>, <span class="number">0.192_156_87</span>, <span class="number">0.192_156_87</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_GREY900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.129_411_77</span>, <span class="number">0.129_411_77</span>, <span class="number">0.129_411_77</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUEGREY500</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.376_470_6</span>, <span class="number">0.490_196_08</span>, <span class="number">0.545_098_07</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUEGREY50</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.925_490_2</span>, <span class="number">0.937_254_9</span>, <span class="number">0.945_098_04</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUEGREY100</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.811_764_7</span>, <span class="number">0.847_058_83</span>, <span class="number">0.862_745_1</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUEGREY200</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.690_196_1</span>, <span class="number">0.745_098_05</span>, <span class="number">0.772_549_03</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUEGREY300</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.564_705_9</span>, <span class="number">0.643_137_3</span>, <span class="number">0.682_352_96</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUEGREY400</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.470_588_24</span>, <span class="number">0.564_705_9</span>, <span class="number">0.611_764_7</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUEGREY600</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.329_411_77</span>, <span class="number">0.431_372_55</span>, <span class="number">0.478_431_37</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUEGREY700</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.270_588_25</span>, <span class="number">0.352_941_2</span>, <span class="number">0.392_156_87</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUEGREY800</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.215_686_28</span>, <span class="number">0.278_431_4</span>, <span class="number">0.309_803_93</span>, <span class="number">1.0</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COLOR_BLUEGREY900</span>: <span class="ident">Vec4</span> <span class="op">=</span> <span class="ident">vec4</span>(<span class="number">0.149_019_61</span>, <span class="number">0.196_078_43</span>, <span class="number">0.219_607_84</span>, <span class="number">1.0</span>);
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="zaplib" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+</body></html>

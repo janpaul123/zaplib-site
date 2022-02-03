@@ -146,10 +146,14 @@
 <p>First let's install some dependencies:</p>
 <ul>
 <li><a href="https://www.rust-lang.org/tools/install">Install Rust</a></li>
-<li>Clone the repo: <code>git clone git@github.com:Zaplib/zaplib.git</code></li>
+<li>Clone the repo: <code>git clone https://github.com/Zaplib/zaplib.git</code></li>
 <li>Navigate to the repo: <code>cd zaplib</code></li>
 <li>Install the Cargo extension for Zaplib <code>cargo install cargo-zaplib</code></li>
-<li>Run the dependency installation using Zaplib Cargo tool <code>cargo zaplib install-deps</code></li>
+<li>Run the dependency installation using Zaplib Cargo tool <code>cargo zaplib install-deps</code>
+<ul>
+<li>If you're going to do local development of Zaplib, be sue to add the <code>--devel</code> flag which installs some more dependencies, like <a href="https://github.com/chromiumembedded">CEF</a> binaries.</li>
+</ul>
+</li>
 </ul>
 <p>Now you're ready to run a simple example natively. Here are some fun ones to play with:</p>
 <ul>

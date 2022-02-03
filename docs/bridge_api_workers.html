@@ -144,7 +144,7 @@
                     <main>
                         <h1 id="web-workers"><a class="header" href="#web-workers">Web Workers</a></h1>
 <p>Zaplib can also be used inside of your own Web Workers. This comes with both some extra features, as well as some caveats.</p>
-<p>First, include the Web Worker entry point (<code>zaplib_runtime.js</code>).</p>
+<p>First, include the Web Worker entry point (<code>zaplib_worker_runtime.js</code>).</p>
 <p>Note that when using CEF we don't support any of these functions yet.</p>
 <h2 id="zaplibnewworkerport--zaplibinitializeworker"><a class="header" href="#zaplibnewworkerport--zaplibinitializeworker">zaplib.newWorkerPort &amp; zaplib.initializeWorker</a></h2>
 <p>In order to use Zaplib inside Web Workers, we first have to create a &quot;worker port&quot; on the main thread, using <code>zaplib.newWorkerPort()</code>. Send that port to the Web Worker using whatever <code>postMessage</code> mechanism you already use. Be sure to add the port to the list of transferables. Example:</p>

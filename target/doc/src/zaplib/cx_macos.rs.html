@@ -519,7 +519,7 @@
                         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cef-debug&quot;</span>)]</span>
                         <span class="ident">zaplib_cef::shutdown</span>();
                     }
-                    <span class="ident">Event::SystemEvent</span>(<span class="ident">e</span>) =&gt; {
+                    <span class="ident">Event::System</span>(<span class="ident">e</span>) =&gt; {
                         <span class="kw">match</span> <span class="ident">e</span> {
                             <span class="ident">SystemEvent::Paint</span> =&gt; {
                                 <span class="kw">let</span> <span class="ident">_vsync</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">process_desktop_paint_callbacks</span>();

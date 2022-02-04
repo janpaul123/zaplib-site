@@ -210,7 +210,7 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cxafterdraw</span> <span class="op">=</span> <span class="ident">CxAfterDraw::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">cx</span>);
             <span class="ident">cx</span>.<span class="ident">event_loop</span>(<span class="op">|</span><span class="ident">cx</span>, <span class="kw-2">mut</span> <span class="ident">event</span><span class="op">|</span> {
                 <span class="kw">match</span> <span class="ident">event</span> {
-                    <span class="ident">Event::SystemEvent</span>(<span class="ident">e</span>) =&gt; {
+                    <span class="ident">Event::System</span>(<span class="ident">e</span>) =&gt; {
                         <span class="kw">match</span> <span class="ident">e</span> {
                             <span class="ident">SystemEvent::Draw</span> =&gt; {
                                 <span class="ident">app</span>.<span class="ident">draw</span>(<span class="ident">cx</span>);
@@ -266,7 +266,7 @@
             <span class="kw">let</span> <span class="ident">appcx</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">appcx</span> <span class="kw">as</span> <span class="kw-2">*mut</span> (<span class="kw-2">*mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">app</span>, <span class="kw-2">*mut</span> <span class="ident">Cx</span>, <span class="kw-2">*mut</span> <span class="ident">CxAfterDraw</span>));
             (<span class="kw-2">*</span><span class="ident">appcx</span>.<span class="number">1</span>).<span class="ident">process_wasm_events</span>(<span class="ident">msg_bytes</span>, <span class="op">|</span><span class="ident">cx</span>, <span class="kw-2">mut</span> <span class="ident">event</span><span class="op">|</span> {
                 <span class="kw">match</span> <span class="ident">event</span> {
-                    <span class="ident">Event::SystemEvent</span>(<span class="ident">e</span>) =&gt; {
+                    <span class="ident">Event::System</span>(<span class="ident">e</span>) =&gt; {
                         <span class="kw">match</span> <span class="ident">e</span> {
                             <span class="ident">SystemEvent::Draw</span> =&gt; {
                                 (<span class="kw-2">*</span><span class="ident">appcx</span>.<span class="number">0</span>).<span class="ident">draw</span>(<span class="ident">cx</span>);

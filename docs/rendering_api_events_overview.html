@@ -154,8 +154,19 @@
 </ul>
 <h2 id="user-input"><a class="header" href="#user-input">User input</a></h2>
 <p>Mouse and touch input are called &quot;pointers&quot; in Zaplib, represented using <a href="/target/doc/zaplib/enum.Event.html#variant.PointerUp"><code>PointerUp</code></a>, <a href="/target/doc/zaplib/enum.Event.html#variant.PointerDown"><code>PointerDown</code></a>, <a href="/target/doc/zaplib/enum.Event.html#variant.PointerMove"><code>PointerMove</code></a>, and <a href="/target/doc/zaplib/enum.Event.html#variant.PointerScroll"><code>PointerScroll</code></a>, and <a href="/target/doc/zaplib/enum.Event.html#variant.PointerHover"><code>PointerHover</code></a>.</p>
+<p>To see if a pointer event is meant for a component, use <a href="/target/doc/zaplib/enum.Event.html#method.hits_pointer"><code>hits_pointer</code></a>. This matches using:</p>
+<ul>
+<li>a <a href="/target/doc/zaplib/struct.ComponentId.html"><code>ComponentId</code></a>, which is a unique identifier you can assign to your component struct with <code>ComponentId::default()</code>.</li>
+<li>an <code>Option&lt;Rect&gt;</code>, which can represent coordinate bounds to match within. This can be manually constructed, but commonly is retrieved from a rendered instance's <code>Area</code>, as so:</li>
+</ul>
+<pre><code class="language-rust noplayground">  // Saved somewhere in `draw`
+  self.area = cx.add_instances(shader, instance_data);
+
+  // In `handle`
+  match event.hits_pointer(cx, self.component_id, self.area.get_rect_for_first_instance(cx)) { ... }
+</code></pre>
 <p>For processing text input, use <a href="/target/doc/zaplib/enum.Event.html#variant.TextInput"><code>TextInput</code></a>. We also have <a href="/target/doc/zaplib/enum.Event.html#variant.KeyDown"><code>KeyDown</code></a> and <a href="/target/doc/zaplib/enum.Event.html#variant.KeyUp"><code>KeyUp</code></a>, useful for keyboard based navigation or shortcuts - but do not rely on these for capturing text input. Use <a href="/target/doc/zaplib/enum.Event.html#variant.TextCopy"><code>TextCopy</code></a> for handling clipboard requests.</p>
-<p>You may have different components of your app which take keyboard input. To manage keyboard focus between them, use <a href="/target/doc/zaplib/struct.Cx.html#method.set_key_focus"><code>set_key_focus</code></a>. This uses <a href="http://localhost:4848/target/doc/zaplib/struct.ComponentId.html"><code>ComponentId</code></a> as a unique identifier, which you should assign to your component struct with <code>ComponentId::default()</code>.</p>
+<p>You may have different components of your app which take keyboard input. To manage keyboard focus between them, use <a href="/target/doc/zaplib/struct.Cx.html#method.set_key_focus"><code>set_key_focus</code></a>. Like earlier, this matches using <a href="/target/doc/zaplib/struct.ComponentId.html"><code>ComponentId</code></a>.</p>
 <p>Then, to see if a keyboard event is meant for a component, use <a href="/target/doc/zaplib/enum.Event.html#method.hits_keyboard"><code>hits_keyboard</code></a>, which will check key focus and skip irrelevant events. It also returns <a href="/target/doc/zaplib/enum.Event.html#variant.KeyFocus"><code>KeyFocus</code></a> and <a href="/target/doc/zaplib/enum.Event.html#variant.KeyFocusLost"><code>KeyFocusLost</code></a> if your component should handle focus changes.</p>
 
                     </main>

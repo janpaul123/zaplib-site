@@ -1008,7 +1008,7 @@
     <span class="kw">pub</span> <span class="ident">user_files</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">UserFile</span><span class="op">&gt;</span>,
 }
 
-<span class="doccomment">/// See [`Event::SystemEvent`].</span>
+<span class="doccomment">/// See [`Event::System`].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SystemEvent</span> {
     <span class="doccomment">/// See [`WebRustCallEvent`]. This event must have a handler registered through [`Cx::on_call_rust`].</span>
@@ -1069,7 +1069,7 @@
     <span class="doccomment">/// A signal was fired using [`Cx::send_signal`].</span>
     <span class="ident">Signal</span>(<span class="ident">SignalEvent</span>),
     <span class="ident">Command</span>(<span class="ident">CommandId</span>),
-    <span class="doccomment">/// Leyboard focus changed between components.</span>
+    <span class="doccomment">/// Keyboard focus changed between components.</span>
     <span class="ident">KeyFocus</span>(<span class="ident">KeyFocusEvent</span>),
     <span class="doccomment">/// Keyboard focus was lost by a component. Returned from [`Event::hits_keyboard`].</span>
     <span class="ident">KeyFocusLost</span>(<span class="ident">KeyFocusEvent</span>),
@@ -1097,7 +1097,7 @@
     <span class="doccomment">/// When a file is being dragged and the mouse moves out of the window</span>
     <span class="ident">FileDragCancel</span>,
     <span class="doccomment">/// Events that are handled internally and are not propagated to an application `handle` method.</span>
-    <span class="ident">SystemEvent</span>(<span class="ident">SystemEvent</span>),
+    <span class="ident">System</span>(<span class="ident">SystemEvent</span>),
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Event</span> {

@@ -333,8 +333,6 @@
 <span id="330">330</span>
 <span id="331">331</span>
 <span id="332">332</span>
-<span id="333">333</span>
-<span id="334">334</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Managing [GPU shaders](https://en.wikipedia.org/wiki/Shader).</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
@@ -416,7 +414,6 @@
     <span class="doccomment">/// Special structure for reading/editing instance properties.</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">instance_props</span>: <span class="ident">InstanceProps</span>,
     <span class="doccomment">/// Special structure for reading/editing geometry properties.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;wasm32&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;windows&quot;</span>))]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">geometry_props</span>: <span class="ident">InstanceProps</span>,
     <span class="doccomment">/// Raw definition of all textures.</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">textures</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PropDef</span><span class="op">&gt;</span>,
@@ -489,7 +486,6 @@
             <span class="ident">rect_instance_props</span>: <span class="ident">RectInstanceProps::construct</span>(<span class="kw-2">&amp;</span><span class="ident">instances</span>),
             <span class="ident">user_uniform_props</span>: <span class="ident">UniformProps::construct</span>(<span class="kw-2">&amp;</span><span class="ident">user_uniforms</span>),
             <span class="ident">instance_props</span>: <span class="ident">InstanceProps::construct</span>(<span class="kw-2">&amp;</span><span class="ident">instances</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;wasm32&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;windows&quot;</span>))]</span>
             <span class="ident">geometry_props</span>: <span class="ident">InstanceProps::construct</span>(<span class="kw-2">&amp;</span><span class="ident">geometries</span>),
             <span class="ident">textures</span>,
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;windows&quot;</span>)]</span>

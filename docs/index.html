@@ -18,7 +18,6 @@
         <link rel="stylesheet" href="css/variables.css">
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
@@ -30,6 +29,7 @@
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/css/custom.css">
 
     </head>
     <body>
@@ -79,6 +79,9 @@
             html.classList.add("sidebar-" + sidebar);
         </script>
 
+        <div class="banner">
+  👋  We're in alpha! Come say hi in our <a href="/slack.html">Slack</a>.
+</div>
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
                 <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="basic_tooling.html"><strong aria-hidden="true">3.</strong> Basic Tooling</a></li><li class="chapter-item expanded "><a href="existing_webapp.html"><strong aria-hidden="true">4.</strong> Integrating with existing webapps</a></li><li class="chapter-item expanded affix "><li class="part-title">Basic APIs</li><li class="chapter-item expanded "><a href="tutorial_hello_world_console.html"><strong aria-hidden="true">5.</strong> Tutorial: Hello World Console</a></li><li class="chapter-item expanded "><a href="tutorial_hello_thread.html"><strong aria-hidden="true">6.</strong> Tutorial: Hello Thread, Hello File</a></li><li class="chapter-item expanded "><a href="basic_api_overview.html"><strong aria-hidden="true">7.</strong> API Overview</a></li><li class="chapter-item expanded affix "><li class="part-title">JS-Rust Bridge</li><li class="chapter-item expanded "><a href="tutorial_js_rust_bridge.html"><strong aria-hidden="true">8.</strong> Tutorial: Integrating with JS</a></li><li class="chapter-item expanded "><a href="tutorial_sharing_data.html"><strong aria-hidden="true">9.</strong> Tutorial: Sharing Data</a></li><li class="chapter-item expanded "><a href="bridge_api.html"><strong aria-hidden="true">10.</strong> API Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="bridge_api_basics.html"><strong aria-hidden="true">10.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="bridge_api_params.html"><strong aria-hidden="true">10.2.</strong> Types of Parameters</a></li><li class="chapter-item expanded "><a href="bridge_api_workers.html"><strong aria-hidden="true">10.3.</strong> Web Workers</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rendering</li><li class="chapter-item expanded "><a href="tutorial_hello_world_canvas.html"><strong aria-hidden="true">11.</strong> Tutorial: Hello World Canvas</a></li><li class="chapter-item expanded "><a href="tutorial_2d_rendering.html"><strong aria-hidden="true">12.</strong> Tutorial: Rendering 2D Shapes</a></li><li class="chapter-item expanded "><a href="tutorial_3d_rendering.html"><strong aria-hidden="true">13.</strong> Tutorial: Rendering 3D Meshes</a></li><li class="chapter-item expanded "><a href="rendering_api_overview.html"><strong aria-hidden="true">14.</strong> API Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rendering_api_canvas.html"><strong aria-hidden="true">14.1.</strong> Canvas</a></li><li class="chapter-item expanded "><a href="rendering_api_overview_model.html"><strong aria-hidden="true">14.2.</strong> Rendering model</a></li><li class="chapter-item expanded "><a href="rendering_api_events_overview.html"><strong aria-hidden="true">14.3.</strong> Events</a></li><li class="chapter-item expanded "><a href="rendering_api_overview_geometry.html"><strong aria-hidden="true">14.4.</strong> Geometry</a></li><li class="chapter-item expanded "><a href="rendering_api_shaders.html"><strong aria-hidden="true">14.5.</strong> Shaders</a></li><li class="chapter-item expanded "><a href="rendering_api_drawing.html"><strong aria-hidden="true">14.6.</strong> Drawing</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">UI</li><li class="chapter-item expanded "><a href="tutorial_ui_components.html"><strong aria-hidden="true">15.</strong> Tutorial: UI Components</a></li><li class="chapter-item expanded "><a href="tutorial_ui_layout.html"><strong aria-hidden="true">16.</strong> Tutorial: UI Layout</a></li><li class="chapter-item expanded "><a href="ui_api_overview.html"><strong aria-hidden="true">17.</strong> API Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ui_api_overview_components.html"><strong aria-hidden="true">17.1.</strong> UI Components</a></li><li class="chapter-item expanded "><a href="ui_api_overview_layout.html"><strong aria-hidden="true">17.2.</strong> Layout</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Misc</li><li class="chapter-item expanded "><a href="known_issues.html"><strong aria-hidden="true">18.</strong> Known Issues</a></li><li class="chapter-item expanded "><a href="contributing.html"><strong aria-hidden="true">19.</strong> Contributing</a></li></ol>
@@ -87,9 +90,7 @@
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
-
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -111,10 +112,17 @@
                     </div>
 
                     <h1 class="menu-title">Zaplib docs</h1>
-
-                    <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                    
+                    
+                    <div class="right-buttons"">
+                        <a href="/slack.html" target="_blank">
+                          <img id="slack-button" src="./img/Slack_Mark_Web.png" />
+                        </a>
+                        <a href="https://github.com/Zaplib/zaplib" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/Zaplib/zaplib/edit/main/zaplib/docs/src/introduction.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
                     </div>
@@ -175,17 +183,13 @@
 <h2 id="development"><a class="header" href="#development">Development</a></h2>
 <p>Zaplib is open source, with the code hosted on <a href="https://github.com/Zaplib/zaplib">Github</a>. Communication happens on <a href="/slack.html">Slack</a>.</p>
 <p>The open source core team consists of:</p>
-<table style="margin: 0">
-    <tr style="vertical-align: top">
-        <td><a href="https://github.com/janpaul123"><img style="width: 150px; max-width: 150px" src="./img/jp.jpg"><br>JP Posma (Zaplib)</a></td>
-        <td><a href="https://github.com/stevekrouse"><img style="width: 150px; max-width: 150px" src="./img/steve.jpg"><br>Steve Krouse (Zaplib)</a></td>
-        <td><a href="https://github.com/disambiguator"><img style="width: 150px; max-width: 150px" src="./img/paras.jpg"><br>Paras Sanghavi (Cruise)</a></td>
-    </tr>
-    <tr style="vertical-align: top">
-        <td><a href="https://github.com/hhsaez"><img style="width: 150px; max-width: 150px" src="./img/hernan.png"><br>Hernan Saez (Cruise)</a></td>
-        <td><a href="https://github.com/pankdm"><img style="width: 150px; max-width: 150px" src="./img/dmitry.jpg"><br>Dmitry Panin (Cruise)</a></td>
-    </tr>
-</table>
+<div style="margin: 0; display: flex; flex-wrap: wrap; vertical-align: top">
+        <div style="max-width: 150px; padding: 3px 20px; border: 1px var(--table-border-color) solid;"><a href="https://github.com/janpaul123"><img style="width: 150px; max-width: 150px" src="./img/jp.jpg"><br>JP Posma (Zaplib)</a></div>
+        <div style="max-width: 150px; padding: 3px 20px; border: 1px var(--table-border-color) solid;"><a href="https://github.com/stevekrouse"><img style="width: 150px; max-width: 150px" src="./img/steve.jpg"><br>Steve Krouse (Zaplib)</a></div>
+        <div style="max-width: 150px; padding: 3px 20px; border: 1px var(--table-border-color) solid;"><a href="https://github.com/disambiguator"><img style="width: 150px; max-width: 150px" src="./img/paras.jpg"><br>Paras Sanghavi (Cruise)</a></div>
+        <div style="max-width: 150px; padding: 3px 20px; border: 1px var(--table-border-color) solid;"><a href="https://github.com/hhsaez"><img style="width: 150px; max-width: 150px" src="./img/hernan.png"><br>Hernan Saez (Cruise)</a></div>
+        <div style="max-width: 150px; padding: 3px 20px; border: 1px var(--table-border-color) solid;"><a href="https://github.com/pankdm"><img style="width: 150px; max-width: 150px" src="./img/dmitry.jpg"><br>Dmitry Panin (Cruise)</a></div>
+</div>
 <p>Also a big shoutout to the <a href="https://github.com/makepad/makepad">Makepad</a> folks, whose open source framework we originally forked and with whom we've had a fruitful collaboration ever since.</p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
 <p>Zaplib is distributed under the terms of both the MIT license and the Apache License (version 2.0).</p>

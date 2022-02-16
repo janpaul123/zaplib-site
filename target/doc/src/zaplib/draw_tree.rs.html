@@ -755,6 +755,15 @@
 <span id="752">752</span>
 <span id="753">753</span>
 <span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
 </pre><pre class="rust"><code><span class="doccomment">//! The main primitives for rendering to the screen.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! A draw tree has two kinds of nodes: [`View`] and [`DrawCall`]. It might look like this:</span>
@@ -836,16 +845,18 @@
         <span class="comment">// check if we have a pass id parent</span>
         <span class="kw">let</span> <span class="ident">pass_id</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">cx</span>.<span class="ident">pass_stack</span>.<span class="ident">last</span>().<span class="ident">expect</span>(<span class="string">&quot;No pass found when begin_view&quot;</span>);
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">view_id</span>.<span class="ident">is_none</span>() {
+        <span class="kw">let</span> <span class="ident">view_id</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">view_id</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">view_id</span> {
+            <span class="ident">view_id</span>
+        } <span class="kw">else</span> {
             <span class="comment">// we need a draw_list_id</span>
-            <span class="self">self</span>.<span class="ident">view_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">cx</span>.<span class="ident">views</span>.<span class="ident">len</span>());
+            <span class="kw">let</span> <span class="ident">view_id</span> <span class="op">=</span> <span class="ident">cx</span>.<span class="ident">views</span>.<span class="ident">len</span>();
+            <span class="self">self</span>.<span class="ident">view_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">view_id</span>);
             <span class="ident">cx</span>.<span class="ident">views</span>.<span class="ident">push</span>(<span class="ident">CxView::default</span>());
-            <span class="kw">let</span> <span class="ident">cxview</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="ident">cx</span>.<span class="ident">views</span>[<span class="self">self</span>.<span class="ident">view_id</span>.<span class="ident">unwrap</span>()];
+            <span class="kw">let</span> <span class="ident">cxview</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="ident">cx</span>.<span class="ident">views</span>[<span class="ident">view_id</span>];
             <span class="ident">cxview</span>.<span class="ident">redraw_id</span> <span class="op">=</span> <span class="ident">cx</span>.<span class="ident">redraw_id</span>;
             <span class="ident">cxview</span>.<span class="ident">pass_id</span> <span class="op">=</span> <span class="ident">pass_id</span>;
-        }
-
-        <span class="kw">let</span> <span class="ident">view_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">view_id</span>.<span class="ident">unwrap</span>();
+            <span class="ident">view_id</span>
+        };
 
         <span class="kw">let</span> (<span class="ident">override_layout</span>, <span class="ident">is_root_for_pass</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">cx</span>.<span class="ident">passes</span>[<span class="ident">pass_id</span>].<span class="ident">main_view_id</span>.<span class="ident">is_none</span>() {
             <span class="comment">// we are the first view on a window</span>
@@ -860,11 +871,7 @@
         <span class="kw">let</span> <span class="ident">cxpass</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="ident">cx</span>.<span class="ident">passes</span>[<span class="ident">pass_id</span>];
         <span class="comment">// find the parent draw list id</span>
         <span class="kw">let</span> <span class="ident">parent_view_id</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_overlay</span> {
-            <span class="kw">if</span> <span class="ident">cxpass</span>.<span class="ident">main_view_id</span>.<span class="ident">is_none</span>() {
-                <span class="macro">panic!</span>(<span class="string">&quot;Cannot make overlay inside window without root view&quot;</span>)
-            };
-
-            <span class="ident">cxpass</span>.<span class="ident">main_view_id</span>.<span class="ident">unwrap</span>()
+            <span class="ident">cxpass</span>.<span class="ident">main_view_id</span>.<span class="ident">expect</span>(<span class="string">&quot;Cannot make overlay inside window without root view&quot;</span>)
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">is_root_for_pass</span> {
             <span class="ident">view_id</span>
         } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">last_view_id</span>) <span class="op">=</span> <span class="ident">cx</span>.<span class="ident">view_stack</span>.<span class="ident">last</span>() {
@@ -955,7 +962,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">end_view</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Cx</span>) -&gt; <span class="ident">Area</span> {
         <span class="macro">assert!</span>(<span class="ident">cx</span>.<span class="ident">shader_group_instance_offsets</span>.<span class="ident">is_empty</span>(), <span class="string">&quot;Can&#39;t use end_view inside a shader group&quot;</span>);
 
-        <span class="kw">let</span> <span class="ident">view_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">view_id</span>.<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">view_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">view_id</span>.<span class="ident">expect</span>(<span class="string">&quot;Not inside a View::begin_view currently&quot;</span>);
 
         <span class="kw">if</span> <span class="ident">cx</span>.<span class="ident">debug_flags</span>.<span class="ident">enable_layout_debugger</span> <span class="op">&amp;&amp;</span> <span class="ident">View::is_main_view</span>(<span class="ident">view_id</span>, <span class="ident">cx</span>) {
             <span class="self">self</span>.<span class="ident">debugger</span>.<span class="ident">draw</span>(<span class="ident">cx</span>);
@@ -1025,7 +1032,7 @@
 
         <span class="kw">let</span> <span class="ident">sh</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">shaders</span>[<span class="ident">shader_id</span>];
 
-        <span class="kw">let</span> <span class="ident">current_view_id</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">view_stack</span>.<span class="ident">last</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">current_view_id</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">view_stack</span>.<span class="ident">last</span>().<span class="ident">expect</span>(<span class="string">&quot;Not inside a View::begin_view currently&quot;</span>);
         <span class="kw">let</span> <span class="ident">cxview</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">views</span>[<span class="ident">current_view_id</span>];
         <span class="kw">let</span> <span class="ident">draw_call_id</span> <span class="op">=</span> <span class="ident">cxview</span>.<span class="ident">draw_calls_len</span>;
 
@@ -1112,9 +1119,19 @@
             <span class="kw">return</span> <span class="ident">Area::Empty</span>;
         }
         <span class="kw">let</span> <span class="ident">shader_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_shader_id</span>(<span class="ident">shader</span>);
-        <span class="kw">let</span> <span class="ident">total_instance_slots</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">shaders</span>[<span class="ident">shader_id</span>].<span class="ident">mapping</span>.<span class="ident">instance_props</span>.<span class="ident">total_slots</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">total_instance_slots</span> <span class="op">*</span> <span class="ident">std::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>(), <span class="ident">std::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>());
+        <span class="kw">let</span> <span class="ident">cxshader</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">shaders</span>[<span class="ident">shader_id</span>];
+
+        <span class="kw">let</span> <span class="ident">total_instance_slots</span> <span class="op">=</span> <span class="ident">cxshader</span>.<span class="ident">mapping</span>.<span class="ident">instance_props</span>.<span class="ident">total_slots</span>;
+        <span class="kw">let</span> <span class="ident">shader_bytes_instance</span> <span class="op">=</span> <span class="ident">total_instance_slots</span> <span class="op">*</span> <span class="ident">std::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>();
+        <span class="kw">let</span> <span class="ident">struct_bytes_instance</span> <span class="op">=</span> <span class="ident">std::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
+        <span class="macro">assert_eq!</span>(
+            <span class="ident">shader_bytes_instance</span>, <span class="ident">struct_bytes_instance</span>,
+            <span class="string">&quot;Mismatch between shader instance slots ({shader_bytes_instance} bytes) and instance struct \
+             ({struct_bytes_instance} bytes)&quot;</span>
+        );
+
         <span class="kw">let</span> <span class="ident">dc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">create_draw_call</span>(<span class="ident">shader_id</span>, <span class="ident">props</span>);
+
         <span class="kw">let</span> <span class="ident">ia</span> <span class="op">=</span> <span class="ident">InstanceRangeArea</span> {
             <span class="ident">view_id</span>: <span class="ident">dc</span>.<span class="ident">view_id</span>,
             <span class="ident">draw_call_id</span>: <span class="ident">dc</span>.<span class="ident">draw_call_id</span>,
@@ -1125,6 +1142,7 @@
         <span class="ident">dc</span>.<span class="ident">instances</span>.<span class="ident">extend_from_slice</span>(<span class="ident">data</span>.<span class="ident">as_f32_slice</span>());
         <span class="kw">let</span> <span class="ident">area</span> <span class="op">=</span> <span class="ident">Area::InstanceRange</span>(<span class="ident">ia</span>);
         <span class="self">self</span>.<span class="ident">add_to_box_align_list</span>(<span class="ident">area</span>);
+
         <span class="ident">area</span>
     }
 
@@ -1210,7 +1228,7 @@
         );
 
         <span class="kw">let</span> <span class="ident">shader_group_size</span> <span class="op">=</span> <span class="ident">shaders_ordered</span>.<span class="ident">len</span>();
-        <span class="kw">let</span> <span class="ident">current_view_id</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">view_stack</span>.<span class="ident">last</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">current_view_id</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">view_stack</span>.<span class="ident">last</span>().<span class="ident">expect</span>(<span class="string">&quot;Not inside a View::begin_view currently&quot;</span>);
         <span class="kw">let</span> <span class="ident">cxview</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">views</span>[<span class="ident">current_view_id</span>];
 
         <span class="comment">// We have to hold the following invariant: if shader_group_instance_offsets is not empty, then the last</span>

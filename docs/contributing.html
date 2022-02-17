@@ -157,8 +157,9 @@
 <li>Running browser tests
 <ul>
 <li>Build the test suite: <code>cargo zaplib build -p test_suite</code></li>
-<li>Have local server running: <code>zaplib/scripts/server.py</code></li>
-<li>Navigate to <code>http://localhost:3000/zaplib/test_suite/</code> and click <code>Run All Tests</code> button</li>
+<li>Have local server running: <code>cargo zaplib serve</code></li>
+<li>Navigate to <code>http://localhost:3000/zaplib/web/test_suite/</code> and click <code>Run All Tests</code></li>
+<li>Test CEF by running <code>cargo run -p test_suite</code> and clicking <code>Run All Tests</code> (macOS Intel only, and first install CEF using <code>cargo zaplib install-deps --devel</code>).</li>
 </ul>
 </li>
 <li>Running jest tests
@@ -168,16 +169,16 @@
 </li>
 </ul>
 <h2 id="updating-the-documentation"><a class="header" href="#updating-the-documentation">Updating the documentation</a></h2>
-<p>The documentation files are located at <code>zaplib/docs/src</code>. To server the docs locally:</p>
+<p>The documentation files are located at <a href="https://github.com/Zaplib/zaplib/tree/main/zaplib/docs/src"><code>zaplib/docs/src</code></a>. To server the docs locally:</p>
 <ol>
 <li>Build the website and watch for changes: <code>zaplib/scripts/watch_website_dev.sh</code> </li>
-<li>Run local server on port 4848: <code>website_dev/server.sh</code> </li>
+<li>Run local server: <code>cargo zaplib serve website_dev/ --port 4848</code> </li>
 </ol>
 <p>To update the prod website:</p>
 <ol>
 <li>Run: <code>zaplib/scripts/build_website_prod.sh</code></li>
 <li>Clone zaplib-site locally: <code>git clone https://github.com/janpaul123/zaplib-site.git</code></li>
-<li>Copy the built website files file to zaplib-site: <code>cp -r website/* zaplib-site/</code></li>
+<li>Copy the built website files file to zaplib-site: <code>cp -r website/* ../zaplib-site/</code></li>
 </ol>
 
                     </main>
